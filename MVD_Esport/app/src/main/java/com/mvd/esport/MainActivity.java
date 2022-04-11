@@ -82,11 +82,11 @@ public class MainActivity extends AppCompatActivity{
         });
         //choix équipe combo box - voir resource String pour changer les valeurs
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.choixÉquipe, android.R.layout.simple_spinner_item);
+                R.array.choixIntensité, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner sItems = (Spinner) findViewById(R.id.choixÉquipe);
+        Spinner sItems = (Spinner) findViewById(R.id.choixIntensité);
         sItems.setAdapter(adapter);
         //fin choix équipe
     }

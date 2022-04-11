@@ -11,14 +11,25 @@
         android:id="@+id/editTextTextPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="4dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="Name"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="-14dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2" />
 
     <Button
         android:id="@+id/sauvegardeExercice"
@@ -30,16 +41,6 @@
         app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
-
-    <Spinner
-        android:id="@+id/choixÉquipe"
-        android:layout_width="259dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="-14dp"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toTopOf="@+id/textView2"
-        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/textView"
@@ -75,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choixÉquipe"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4"
         tools:ignore="SpeakableTextPresentCheck">
 
         <HorizontalScrollView
@@ -110,12 +111,12 @@
 
                     <EditText
                         android:id="@+id/editTextActivitéPhysique"
-                        android:layout_width="114dp"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="textPersonName"
-                        android:text="Name" />
+                        android:textSize="14sp" />
 
                 </LinearLayout>
 
@@ -127,7 +128,7 @@
 
                     <TextView
                         android:id="@+id/textDate"
-                        android:layout_width="wrap_content"
+                        android:layout_width="98dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="30dp"
                         android:layout_marginBottom="30dp"
@@ -136,8 +137,8 @@
 
                     <EditText
                         android:id="@+id/editTextDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:ems="10"
                         android:focusableInTouchMode="false"
@@ -155,7 +156,7 @@
 
                     <TextView
                         android:id="@+id/textObjectifPersonnel"
-                        android:layout_width="wrap_content"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"
                         android:paddingHorizontal="10px"
@@ -163,8 +164,8 @@
 
                     <EditText
                         android:id="@+id/editTextObjectifPersonnel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:ems="10"
                         android:inputType="textPersonName"
@@ -181,7 +182,7 @@
 
                     <TextView
                         android:id="@+id/textDurée"
-                        android:layout_width="wrap_content"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"
                         android:paddingHorizontal="10px"
@@ -189,8 +190,8 @@
 
                     <EditText
                         android:id="@+id/editTextDurée"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:ems="10"
                         android:focusableInTouchMode="false"
@@ -208,7 +209,7 @@
 
                     <TextView
                         android:id="@+id/textIntensité"
-                        android:layout_width="wrap_content"
+                        android:layout_width="122dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"
                         android:paddingHorizontal="10px"
@@ -216,10 +217,10 @@
 
                     <Spinner
                         android:id="@+id/choixIntensité"
-                        android:layout_width="200dp"
-                        android:layout_height="40dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
                         android:layout_marginStart="4dp"
-                        android:layout_marginTop="-14dp"
+                        android:layout_marginTop="0dp"
                         tools:ignore="SpeakableTextPresentCheck" />
 
                 </LinearLayout>
