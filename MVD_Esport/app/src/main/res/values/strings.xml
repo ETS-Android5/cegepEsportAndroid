@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">MVD_Esport</string>
-    <string-array name="choixÉquipe">
-        <item>Rocket League</item>
-        <item>League of Legend</item>
+    <string name="app_name">Feuille de route - sport électronique</string>
+    <string-array name="choixIntensité">
+        <item>faible</item>
+        <item>moyen</item>
+        <item>élevé</item>
     </string-array>
 
 </resources>
