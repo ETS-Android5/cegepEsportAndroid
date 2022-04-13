@@ -12,6 +12,8 @@ import java.io.FileOutputStream
 /**
  * Created by Annas Surdyanto on 05/02/22.
  * Modified by Victor Bélanger on 2022-04-11
+ * https://github.com/annasta13/Pdf-Export/blob/master/app/src/main/java/com/habileducation/pdfexport/pdfService/PdfService.kt
+ * ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
  */
 
 class pdfService {
@@ -43,5 +45,78 @@ class pdfService {
         document.open()
     }
 
+    private fun createTable(column: Int, columnWidth: FloatArray): PdfPTable { //createTable. Va créer un tableau générique.
+        val table = PdfPTable(column) //nbr de col dans le tableau
+        table.widthPercentage = 100f
+        table.setWidths(columnWidth) //grosseur des col
+        table.headerRows = 1
+        table.defaultCell.verticalAlignment = Element.ALIGN_CENTER
+        table.defaultCell.horizontalAlignment = Element.ALIGN_CENTER
+        return table //TODO: Check si le tableau généré nous convient.
+    }
 
+    private fun createCell(content: String): PdfPCell { //Créer des cells avec text
+        val cell = PdfPCell(Phrase(content))
+        cell.horizontalAlignment = Element.ALIGN_CENTER
+        cell.verticalAlignment = Element.ALIGN_MIDDLE
+        //setup padding
+        cell.setPadding(8f)
+        cell.isUseAscender = true
+        cell.paddingLeft = 4f
+        cell.paddingRight = 4f
+        cell.paddingTop = 8f
+        cell.paddingBottom = 8f
+        return cell
+    }
+
+    private fun addLineSpace(document: Document, number: Int) { //ajoute une ligne vide dans le document
+        for (i in 0 until number) {
+            document.add(Paragraph(" "))
+        }
+    }
+
+    private fun createParagraph(content: String): Paragraph{ //va créer un paragraphe //TODO: Check format du paragraph.
+        val paragraph = Paragraph(content, BODY_FONT)
+        paragraph.firstLineIndent = 25f
+        paragraph.alignment = Element.ALIGN_JUSTIFIED
+        return paragraph
+    }
+
+    //TODO: créer une fonction qui va inclure l'image de l'utilisateur.
+
+    //temps de créer une fonction pour générer un PDF!
+    fun createUserTable(
+        data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
+        paragraphList: List<String>, //Note personelle.
+        onFinish: (file: File) -> Unit,
+        onError: (Exception) -> Unit
+    ){
+        //Define the document
+        val file = createFile()
+        val document = createDocument()
+        //Setup PDF Writer
+        setupPdfWriter(document, file)
+        //Va chercher le nom et nom d'equipe de la premiere entree dans la liste.
+        val nomUser = data[0].nom
+        val nomEquipe = data[0].equipe
+
+        //Titre et Équipe. j'imagine 1 tableau avec le nom et l'équipe.
+        val columnWidth = floatArrayOf(1f, 1f)
+        val table = createTable(columnWidth.size, columnWidth)
+        listOf<String>("Nom","Équipe", nomUser, nomEquipe).forEach() //Fonction anonyme pour la création du tableau qui affiche le nom et equipe de la personne.
+        {
+            table.addCell(createCell(it))
+        }
+        //ajout du tableau au document PDF
+        document.add(table)
+        document.close()
+
+        try {
+            pdf.close()
+        } catch (ex: Exception) {
+            onError(ex)
+        } finally {
+            onFinish(file)
+        }
+    }
 }
