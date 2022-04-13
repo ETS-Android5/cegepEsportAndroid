@@ -1,32 +1,24 @@
 package com.mvd.esport;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.print.PrintAttributes;
 import android.text.InputType;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -37,38 +29,18 @@ public class MainActivity extends AppCompatActivity{
     TimePickerDialog timePickerDialog;
     EditText dateText;
     EditText timeText;
-    EditText inputÉquipe;
     //fin sélecteur
-
-    public static float convertDpToPixel(float dp, Context context){
-        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //prend la langue du téléphone
 
         dateText = (EditText) findViewById(R.id.editTextDate);
         timeText = (EditText) findViewById(R.id.editTextDurée);
-        inputÉquipe = (EditText) findViewById(R.id.editTextNomEquipe);
         dateText.setInputType(InputType.TYPE_NULL);
         timeText.setInputType(InputType.TYPE_NULL);
-
-        if(Locale.getDefault().getLanguage() == "en"){
-            //https://stackoverflow.com/questions/52148129/programmatically-set-margin-to-constraintlayout
-            //tasse le input pour écrire l'équipe parce que le layout en fracais fit mais pas en anglais
-
-            ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) inputÉquipe.getLayoutParams();
-
-            newLayoutParams.topMargin = (int) convertDpToPixel(-23.0f,this);
-            newLayoutParams.leftMargin = (int) convertDpToPixel(36.0f,this);
-            newLayoutParams.rightMargin = 0;
-            inputÉquipe.setLayoutParams(newLayoutParams);
-
-        }
 
         dateText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,12 +72,7 @@ public class MainActivity extends AppCompatActivity{
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int heure, int minute) {
-                                if(Locale.getDefault().getLanguage() == "en"){
-                                    timeText.setText(heure + " Hour(s)" + " and " + minute + " minute(s)");
-                                }
-                                else{
-                                    timeText.setText(heure + " Heure(s)" + " et " + minute + " minute(s)");
-                                }
+                                timeText.setText(heure + " heure(s)" + " et " + minute + " minute(s)");
                             }
                         }, heure, minute, true);
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -113,15 +80,14 @@ public class MainActivity extends AppCompatActivity{
                 timePickerDialog.show();
             }
         });
-        //choix intensité combo box - voir resource String pour changer les valeurs
+        //choix équipe combo box - voir resource String pour changer les valeurs
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.choixIntensité, android.R.layout.simple_spinner_item);
+                R.array.choixÉquipe, android.R.layout.simple_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner sItems = (Spinner) findViewById(R.id.choixIntensité);
+        Spinner sItems = (Spinner) findViewById(R.id.choixÉquipe);
         sItems.setAdapter(adapter);
-        sItems.setSelection(1);
         //fin choix équipe
     }
 }
