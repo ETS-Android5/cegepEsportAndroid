@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Feuille de route - sport électronique</string>
+    <string-array name="choixÉquipe">
+        <item>Rocket League</item>
+        <item>League of Legend</item>
+    </string-array>
+
+</resources>

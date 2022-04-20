@@ -9,7 +9,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.print.PrintAttributes;
 import android.text.InputType;
 import android.util.DisplayMetrics;
@@ -17,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,17 +23,10 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.mvd.esport.data.donneesUtilisateur;
-import com.mvd.esport.pdfService.pdfService;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.io.File;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -47,15 +38,7 @@ public class MainActivity extends AppCompatActivity{
     EditText dateText;
     EditText timeText;
     EditText inputÉquipe;
-    EditText inputNom;
-    EditText inputActivite;
-    EditText inputpersonelle;
-    Spinner choixintense;
     //fin sélecteur
-
-    //Données utilisateurs
-    ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
-    Button pdfButton;
 
     public static float convertDpToPixel(float dp, Context context){
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
@@ -68,13 +51,9 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         //prend la langue du téléphone
 
-        dateText = findViewById(R.id.editTextDate);
-        timeText = findViewById(R.id.editTextDurée);
-        inputÉquipe = findViewById(R.id.editTextNomEquipe);
-        inputNom = findViewById(R.id.editTextTextPersonName);
-        inputActivite = findViewById(R.id.editTextActivitéPhysique);
-        inputpersonelle = findViewById(R.id.editTextObjectifPersonnel);
-        choixintense = findViewById(R.id.choixIntensité);
+        dateText = (EditText) findViewById(R.id.editTextDate);
+        timeText = (EditText) findViewById(R.id.editTextDurée);
+        inputÉquipe = (EditText) findViewById(R.id.editTextNomEquipe);
         dateText.setInputType(InputType.TYPE_NULL);
         timeText.setInputType(InputType.TYPE_NULL);
 
@@ -144,24 +123,5 @@ public class MainActivity extends AppCompatActivity{
         sItems.setAdapter(adapter);
         sItems.setSelection(1);
         //fin choix équipe
-
-        //Code lié au button PDF
-        //Ayyy j'aime don ben ça de faire les event avec une fonction lambda <3
-        //"the more I know"
-        pdfButton = findViewById(R.id.sauvegardeExercice);
-        pdfButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dataUser.clear();
-                dataUser.add(new donneesUtilisateur(inputNom.toString(),inputÉquipe.toString(),inputActivite.toString(),dateText.toString(),inputpersonelle.toString(),timeText.toString(),choixintense.toString()));
-                //createPDF(); //TODO : Kotlin Unit to Java void. Voir aussi openFile() dans le projet pdf export
-                    //TODO: Je pourrais aussi mettre createPDF() et openFile() dans leur propre class Kotlin. c'est awkward de traduire des objets Kotlin en Java parfois.
-            }
-        });
     }
-
-    /*private void createPDF() {
-        pdfService pdfService = new pdfService();
-        pdfService.createUserTable(dataUser, dataUser.get(3).toString(), (Function1<? super File, Unit>) fichier); //Cast fichier to unit file
-    }*/
 }

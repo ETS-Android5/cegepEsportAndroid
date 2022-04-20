@@ -1,7 +1,6 @@
 package com.mvd.esport.pdfService
 
 import android.os.Environment
-import android.util.Log
 import com.mvd.esport.data.donneesUtilisateur
 import com.itextpdf.text.*
 import com.itextpdf.text.pdf.PdfPCell
@@ -14,15 +13,13 @@ import java.io.FileOutputStream
  * Created by Annas Surdyanto on 05/02/22.
  * Modified by Victor Bélanger on 2022-04-11
  * https://github.com/annasta13/Pdf-Export/blob/master/app/src/main/java/com/habileducation/pdfexport/pdfService/PdfService.kt
- *
+ * ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
  */
 
 class pdfService {
     val TITLE_FONT = Font(Font.FontFamily.TIMES_ROMAN, 16f, Font.BOLD) //TODO: Modifier les polices au besoins
     val BODY_FONT = Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.NORMAL)
     private lateinit var pdf: PdfWriter //objet PDF
-
-    private val TAG = "pdfService"
 
     private fun createFile(): File {
         //Prepare file
@@ -58,7 +55,6 @@ class pdfService {
         return table //TODO: Check si le tableau généré nous convient.
     }
 
-    //TODO : Ajuster le padding au besoin
     private fun createCell(content: String): PdfPCell { //Créer des cells avec text
         val cell = PdfPCell(Phrase(content))
         cell.horizontalAlignment = Element.ALIGN_CENTER
@@ -91,8 +87,9 @@ class pdfService {
     //temps de créer une fonction pour générer un PDF!
     fun createUserTable(
         data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
-        paragraphList: String, //Note personelle.
+        paragraphList: List<String>, //Note personelle.
         onFinish: (file: File) -> Unit,
+        onError: (Exception) -> Unit
     ){
         //Define the document
         val file = createFile()
@@ -117,7 +114,7 @@ class pdfService {
         try {
             pdf.close()
         } catch (ex: Exception) {
-            Log.e(TAG,ex.toString())
+            onError(ex)
         } finally {
             onFinish(file)
         }
