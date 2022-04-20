@@ -1,18 +1,8 @@
 <resources>
-    <string name="app_name">Feuille de route - sport électronique</string>
-    <string name="labelNom">Nom :</string>
-    <string name="labelÉquipe">Équipe :</string>
-    <string name="labelActivité">Activité Pratiquée :</string>
-    <string name="labelDate">"Date : "</string>
-    <string name="labelObjectifPerso">Objectif Personnel :</string>
-    <string name="labelDurée">Durée :</string>
-    <string name="labelIntensité">Intensité :</string>
-    <string name="inputDateText">Click ici pour entrez la date!</string>
-    <string name="inputDuréeText">Click ici pour entrez le temps!</string>
-    <string-array name="choixIntensité">
-        <item>Faible</item>
-        <item>Moyen</item>
-        <item>Élevé</item>
+    <string name="app_name">MVD_Esport</string>
+    <string-array name="choixÉquipe">
+        <item>Rocket League</item>
+        <item>League of Legend</item>
     </string-array>
 
 </resources>

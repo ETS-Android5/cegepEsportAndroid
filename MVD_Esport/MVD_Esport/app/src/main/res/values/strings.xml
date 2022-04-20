@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">MVD_Esport</string>
-    <string-array name="choixÉquipe">
-        <item>Rocket League</item>
-        <item>League of Legend</item>
-    </string-array>
-
-</resources>
