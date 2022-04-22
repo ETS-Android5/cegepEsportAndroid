@@ -36,13 +36,15 @@
 
     <Button
         android:id="@+id/sauvegardeExercice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="164dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="104dp"
         android:layout_marginTop="20dp"
-        android:text="sauvegarde exercice"
+        android:layout_marginBottom="50dp"
+        android:text="Exportation"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnPhoto"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
     <TextView
@@ -207,7 +209,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearLayoutIntensité"
+                    android:id="@+id/linearLayoutPhoto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="15dp">
@@ -229,8 +231,26 @@
                         tools:ignore="SpeakableTextPresentCheck" />
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imgPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
         </HorizontalScrollView>
     </ScrollView>
+
+    <Button
+        android:id="@+id/btnPhoto"
+        android:layout_width="142dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginBottom="50dp"
+        android:text="choix photo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
