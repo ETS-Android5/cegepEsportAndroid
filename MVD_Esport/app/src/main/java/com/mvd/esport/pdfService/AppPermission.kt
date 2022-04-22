@@ -11,6 +11,7 @@ import com.mvd.esport.MainActivity
 /**
  * Created by Annas Surdyanto on 15/09/21.
  *
+ * Je pense qu'on en a plus besoin... lol
  */
 class AppPermission {
     companion object {
@@ -20,10 +21,11 @@ class AppPermission {
 
         fun requestPermission(activity: MainActivity) {
             ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE),
-                REQUEST_PERMISSION
-            )
+                activity, arrayOf(WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE), REQUEST_PERMISSION)
         }
+    }
+
+    fun checkPermission(activity: MainActivity){
+        if (!permissionGranted(activity)) requestPermission(activity)
     }
 }
