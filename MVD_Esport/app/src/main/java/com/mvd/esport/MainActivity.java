@@ -36,6 +36,8 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.mvd.esport.data.donneesUtilisateur;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,6 +61,15 @@ public class MainActivity extends AppCompatActivity{
     EditText inputÉquipe;
     //fin time et date picker
 
+    //victor - Données utilisateurs et sélecteurs pour les text restants.
+    EditText inputNom;
+    EditText inputActivite;
+    EditText inputpersonelle;
+    Spinner choixintense;
+    ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
+    Button pdfButton;
+
+
     public static float convertDpToPixel(float dp, Context context){
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
@@ -72,6 +83,7 @@ public class MainActivity extends AppCompatActivity{
         initialisationInterface();
         initialisationPickers();
         initialisationPhoto();
+        initAdditionel();
     }
 
     //créateur: David Mamina
@@ -168,6 +180,34 @@ public class MainActivity extends AppCompatActivity{
         sItems.setSelection(1);
         //fin choix équipe
     }
+
+    //Créateur: Victor Bélanger
+    public void initAdditionel(){
+        inputNom = findViewById(R.id.editTextTextPersonName);
+        inputActivite = findViewById(R.id.editTextActivitéPhysique);
+        inputpersonelle = findViewById(R.id.editTextObjectifPersonnel);
+        choixintense = findViewById(R.id.choixIntensité);
+
+        //Code lié au button PDF
+        //Ayyy j'aime don ben ça de faire les event avec une fonction lambda <3
+        //"the more I know"
+        pdfButton = findViewById(R.id.sauvegardeExercice);
+        pdfButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dataUser.clear();
+                dataUser.add(new donneesUtilisateur(inputNom.toString(),inputÉquipe.toString(),inputActivite.toString(),dateText.toString(),inputpersonelle.toString(),timeText.toString(),choixintense.toString()));
+                //createPDF(); //TODO : Kotlin Unit to Java void. Voir aussi openFile() dans le projet pdf export
+                //TODO: Je pourrais aussi mettre createPDF() et openFile() dans leur propre class Kotlin. c'est awkward de traduire des objets Kotlin en Java parfois.
+            }
+        });
+
+        /*private void createPDF() {
+        pdfService pdfService = new pdfService();
+        pdfService.createUserTable(dataUser, dataUser.get(3).toString(), (Function1<? super File, Unit>) fichier); //Cast fichier to unit file
+        }*/
+    }
+
     //créateur: Maxime Paulin
     public void initialisationPickers(){
         dateText.setOnClickListener(new View.OnClickListener() {
