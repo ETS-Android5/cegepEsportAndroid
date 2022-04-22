@@ -91,7 +91,7 @@ class pdfService {
     //temps de créer une fonction pour générer un PDF!
     fun createUserTable(
         data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
-        paragraphList: String, //Note personelle.
+        //TODO: paragraphList: String, //Note personelle. Dans une valeur séparé ou dans la liste data?
         onFinish: (file: File) -> Unit,
     ){
         //Define the document

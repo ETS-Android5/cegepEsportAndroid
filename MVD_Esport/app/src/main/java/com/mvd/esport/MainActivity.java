@@ -37,6 +37,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.mvd.esport.data.donneesUtilisateur;
+import com.mvd.esport.pdfService.AppPermission;
+import com.mvd.esport.pdfService.pdfFunctions;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -68,6 +70,8 @@ public class MainActivity extends AppCompatActivity{
     Spinner choixintense;
     ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
     Button pdfButton;
+    //pdfFunctions : Class que j'ai créer pour travailler avec les fonctions kotlins pour créer un PDF. parce que utiliser les services de pdfServices directement était awkward lol.
+    pdfFunctions pdfFunctions;
 
 
     public static float convertDpToPixel(float dp, Context context){
@@ -103,19 +107,26 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v) {
                 //accès à la galerie du téléphone
                 //https://stackoverflow.com/questions/43519311/java-io-filenotfoundexception-permission-denied-when-saving-image
-                if (Build.VERSION.SDK_INT >= 23) {
-                    int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    }
-                    else{
+                if (check_Write_perm()) {
                         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(galleryIntent, 1);
                     }
                 }
-            }
         });
     }
+
+    //Victor - Fonction qui retourne faux si permission n'est pas granted, vrai si granted,
+    public boolean check_Write_perm(){
+        if (Build.VERSION.SDK_INT >= 23) {
+            int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        return true;
+    }
+
     //https://medium.com/kinandcartacreated/finally-a-clean-way-to-deal-with-permissions-in-android-539786a7846
     //créateur: David Mamina
     public void onActivityResult(int RequestCode, int resultCode, Intent data)
@@ -188,6 +199,8 @@ public class MainActivity extends AppCompatActivity{
         inputpersonelle = findViewById(R.id.editTextObjectifPersonnel);
         choixintense = findViewById(R.id.choixIntensité);
 
+        pdfFunctions = new pdfFunctions(this);
+
         //Code lié au button PDF
         //Ayyy j'aime don ben ça de faire les event avec une fonction lambda <3
         //"the more I know"
@@ -196,16 +209,12 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 dataUser.clear();
-                dataUser.add(new donneesUtilisateur(inputNom.toString(),inputÉquipe.toString(),inputActivite.toString(),dateText.toString(),inputpersonelle.toString(),timeText.toString(),choixintense.toString()));
-                //createPDF(); //TODO : Kotlin Unit to Java void. Voir aussi openFile() dans le projet pdf export
-                //TODO: Je pourrais aussi mettre createPDF() et openFile() dans leur propre class Kotlin. c'est awkward de traduire des objets Kotlin en Java parfois.
+                dataUser.add(new donneesUtilisateur(inputNom.getText().toString(),inputÉquipe.getText().toString(),inputActivite.getText().toString(),dateText.getText().toString(),inputpersonelle.getText().toString(),timeText.getText().toString(),choixintense.getSelectedItem().toString())   );
+                if(check_Write_perm()){
+                    pdfFunctions.createPdf(dataUser);
+                }
             }
         });
-
-        /*private void createPDF() {
-        pdfService pdfService = new pdfService();
-        pdfService.createUserTable(dataUser, dataUser.get(3).toString(), (Function1<? super File, Unit>) fichier); //Cast fichier to unit file
-        }*/
     }
 
     //créateur: Maxime Paulin
