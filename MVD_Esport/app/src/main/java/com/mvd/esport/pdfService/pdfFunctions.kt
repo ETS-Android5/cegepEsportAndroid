@@ -12,12 +12,12 @@ import java.io.File
 
 class pdfFunctions(context: MainActivity) { //param constructeur sont ici!
 
-    val paramThis: Context = context // Passe variable en param a l'objet.
+    private val paramThis: Context = context // Passe variable en param a l'objet.
 
-    fun createPdf(userData: List<donneesUtilisateur>) { //fonction qui va creer le pdf
+    fun createPdf(userData: List<donneesUtilisateur>, image: String) { //fonction qui va creer le pdf
         val onFinish: (File) -> Unit = { openFile(it) } // <-- la seul raison pourquoi je travaille encore en Kotlin :P
         val pdfService = pdfService()
-        pdfService.createUserTable(data = userData, onFinish = onFinish)
+        pdfService.createUserTable(data = userData, onFinish = onFinish, imageUser = image)
     }
 
     //https://github.com/annasta13/Pdf-Export

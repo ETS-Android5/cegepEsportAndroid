@@ -1,14 +1,16 @@
 package com.mvd.esport.pdfService
 
+
 import android.os.Environment
 import android.util.Log
-import com.mvd.esport.data.donneesUtilisateur
 import com.itextpdf.text.*
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
+import com.mvd.esport.data.donneesUtilisateur
 import java.io.File
 import java.io.FileOutputStream
+
 
 /**
  * Created by Annas Surdyanto on 05/02/22.
@@ -91,6 +93,7 @@ class pdfService {
     //temps de créer une fonction pour générer un PDF!
     fun createUserTable(
         data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
+        imageUser : String, //path de l'image
         //TODO: paragraphList: String, //Note personelle. Dans une valeur séparé ou dans la liste data?
         onFinish: (file: File) -> Unit,
     ){
@@ -112,8 +115,36 @@ class pdfService {
         }
         //ajout du tableau au document PDF
         document.add(table)
-        document.close()
+        addLineSpace(document,2)
 
+
+        val table2 = createTable(columnWidth.size, columnWidth) //TODO : Trouver un moyen de réutiliser l'objet table en Kotlin
+        //créer l'autre tableau.
+        listOf<String>(
+            "Activité pratiqué : ",data[0].activitePratique,
+            "Date : ", data[0].date,
+            "Objectif Personel : ", data[0].objectifPersonel,
+            "Durée : ", data[0].dureeMinute,
+            "Intensité : ", data[0].intensite
+        ).forEach() {
+            table2.addCell(createCell(it))
+        }
+        document.add(table2)
+        addLineSpace(document,2)
+
+
+        //ajoute la photo au PDF
+        //TODO : Au besoin : Resize l'image pour qu'elle "fit" dans la page.
+        try {
+            if (imageUser.isNotBlank()){ //si le string n'est pas vide
+                document.add(Image.getInstance(imageUser)) //essaye d'ajouter l'image
+            }
+        }catch (ex : java.io.FileNotFoundException){ //si l'utilisateur delete l'image apres l'avoir choisis, fait rien avec l'image.
+            Log.e(TAG,ex.toString())
+            //fait rien. faudrait avoir une image noir avec "IMAGE PERDU" écrit dessus pour ce cas.
+        }
+
+        document.close()
         try {
             pdf.close()
         } catch (ex: Exception) {
