@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/belv/Desktop/github-test/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
         <entry key="..\:/Users/paum/Desktop/MVD_BonneVersion/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/paum/Desktop/MVD_BonneVersion/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/voir_entrainement.xml" value="0.358695652173913" />
         <entry key="..\:/Users/paum/Desktop/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/paum/Desktop/MVD_Esport2/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
       </map>
@@ -15,5 +16,8 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="SuppressKotlinCodeStyleNotification">
+    <option name="disableForAll" value="true" />
   </component>
 </project>

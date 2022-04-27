@@ -15,34 +15,46 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.print.PrintAttributes;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+<<<<<<< Updated upstream
 import java.io.FileNotFoundException;
+=======
+import com.mvd.esport.data.donneesUtilisateur;
+import com.mvd.esport.pdfService.pdfFunctions;
+
+import java.io.IOException;
+>>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
+
+    public Button btnVoirEntrainement;
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
 
     public enum WindowSizeClass { COMPACT, MEDIUM, EXPANDED }
     private static final String TAG = "";
@@ -74,11 +86,40 @@ public class MainActivity extends AppCompatActivity{
         initialisationPhoto();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+        outState.putString("nom", inputNom.getText().toString());
+        outState.putString("équipe", inputÉquipe.getText().toString());
+        outState.putString("activitéPratiquée", inputActivite.getText().toString());
+        outState.putString("date", dateText.getText().toString());
+        outState.putString("objectifPersonnel", inputpersonelle.getText().toString());
+        outState.putString("durée", timeText.getText().toString());
+        outState.putInt("intensité", choixintense.getSelectedItemPosition());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // Restore UI state from the savedInstanceState.
+        // This bundle has also been passed to onCreate.
+        inputNom.setText(savedInstanceState.getString("nom"));
+        inputÉquipe.setText(savedInstanceState.getString("équipe"));
+        inputActivite.setText(savedInstanceState.getString("activitéPratiquée"));
+        dateText.setText(savedInstanceState.getString("date"));
+        inputpersonelle.setText(savedInstanceState.getString("objectifPersonnel"));
+        timeText.setText(savedInstanceState.getString("durée"));
+        choixintense.setSelection(savedInstanceState.getInt("intensité"));
+    }
+
     //créateur: David Mamina
     public void initialisationPhoto(){
         //lien avec les objets graphiques
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
-        btnPhoto = (Button) findViewById(R.id.btnPhoto);
+        btnPhoto = (Button) findViewById(R.id.btnRetour);
         //textView = (TextView) findViewById(R.id.textView);
         //Initialisation méthode clic sur boutton
         createOnClicPhotoButton();
@@ -126,6 +167,35 @@ public class MainActivity extends AppCompatActivity{
 
                 //recuperation image
                 Bitmap image = BitmapFactory.decodeFile((imgPath));
+            ExifInterface ei = null;
+            try {
+                ei = new ExifInterface(imgPath);
+            } catch (IOException e) {
+                Toast.makeText(this, "test",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED);
+
+            Bitmap rotatedBitmap = null;
+            switch(orientation) {
+
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotatedBitmap = rotateImage(image, 90);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotatedBitmap = rotateImage(image, 180);
+                    break;
+
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotatedBitmap = rotateImage(image, 270);
+                    break;
+
+                case ExifInterface.ORIENTATION_NORMAL:
+                default:
+                    rotatedBitmap = image;
+            }
                 //affiche
                 imgPhoto.setImageBitmap(image);
             }
@@ -135,10 +205,16 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
+
     //créateur: Maxime Paulin
     public void initialisationInterface(){
-        //prend la langue du téléphone
-
+        btnVoirEntrainement = (Button) findViewById(R.id.voirEntrainement);
         dateText = (EditText) findViewById(R.id.editTextDate);
         timeText = (EditText) findViewById(R.id.editTextDurée);
         inputÉquipe = (EditText) findViewById(R.id.editTextNomEquipe);
@@ -167,6 +243,14 @@ public class MainActivity extends AppCompatActivity{
         sItems.setAdapter(adapter);
         sItems.setSelection(1);
         //fin choix équipe
+
+        btnVoirEntrainement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, voirEntrainement.class);
+                        startActivity(intent);
+            }
+        });
     }
     //créateur: Maxime Paulin
     public void initialisationPickers(){
