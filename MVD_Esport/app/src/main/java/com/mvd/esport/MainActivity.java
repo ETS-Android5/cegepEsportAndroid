@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity{
     Button pdfButton;
     //pdfFunctions : Class que j'ai créer pour travailler avec les fonctions kotlins pour créer un PDF. parce que utiliser les services de pdfServices directement était awkward lol.
     pdfFunctions pdfFunctions;
+    String imgPath = " ";
 
 
     public static float convertDpToPixel(float dp, Context context){
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity{
             //position sur la première ligne
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColum[0]);
-            String imgPath = cursor.getString(columnIndex);
+            imgPath = cursor.getString(columnIndex);
             cursor.close();
 
                 //recuperation image
@@ -211,7 +212,7 @@ public class MainActivity extends AppCompatActivity{
                 dataUser.clear();
                 dataUser.add(new donneesUtilisateur(inputNom.getText().toString(),inputÉquipe.getText().toString(),inputActivite.getText().toString(),dateText.getText().toString(),inputpersonelle.getText().toString(),timeText.getText().toString(),choixintense.getSelectedItem().toString())   );
                 if(check_Write_perm()){
-                    pdfFunctions.createPdf(dataUser);
+                    pdfFunctions.createPdf(dataUser, imgPath);
                 }
             }
         });
