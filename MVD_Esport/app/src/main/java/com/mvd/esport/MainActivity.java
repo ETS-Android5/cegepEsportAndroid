@@ -15,7 +15,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -41,6 +43,7 @@ import com.mvd.esport.pdfService.AppPermission;
 import com.mvd.esport.pdfService.pdfFunctions;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -49,7 +52,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity{
 
     public enum WindowSizeClass { COMPACT, MEDIUM, EXPANDED }
-    private static final String TAG = "";
+    private static final String TAG = "MainActivity";
     //section photo
     private ImageView imgPhoto;
     private Button btnPhoto;
@@ -149,8 +152,10 @@ public class MainActivity extends AppCompatActivity{
             cursor.close();
 
                 //recuperation image
-                Bitmap image = BitmapFactory.decodeFile((imgPath));
-                //affiche
+                //Victor - J'ai butchered un peu le code "for the greater good"
+                Bitmap image = null;
+                try { image = rotateImage(null, imgPath); } catch (IOException e) { Log.e(TAG,e.toString()); }
+                //affiche l'image
                 imgPhoto.setImageBitmap(image);
             }
         else
@@ -216,6 +221,40 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+    }
+
+    //Victor - Faque on a un petit probleme avec les images photos : On lis pas la metadonné pour savoir l'orientation de la photo.
+    //C'est important de le savoir, car les photos pris par téléphone ne tourne pas l'image a l'enregistrement de l'image pour l'afficher a l'écran comme du monde, ils ont juste foutu des données dans l'image.
+    //c'est donc au développeur d'orienter l'image selon les données EXIF the l'image. Fun :)
+    //Y'a seulement moi qui peut être lâche dans le monde!!!!!
+
+    //Anyway. Voici une façon de gérer ça.
+    //https://gist.github.com/tomogoma/788e3b775dd611c9226f8e17781a0f0c
+    public static Bitmap rotateImage(Bitmap bitmap, String path) throws IOException {
+
+        if(bitmap == null){ //si l'image n'existe pas. va la créer
+            bitmap = BitmapFactory.decodeFile(path);
+        }
+
+        int rotate = 0;
+        ExifInterface exif = new ExifInterface(path); //va chercher les metadonne de l'image.
+        int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL);
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotate = 270;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotate = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotate = 90;
+                break;
+        }
+        Matrix matrix = new Matrix();
+        matrix.postRotate(rotate);
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+                bitmap.getHeight(), matrix, true);
     }
 
     //créateur: Maxime Paulin

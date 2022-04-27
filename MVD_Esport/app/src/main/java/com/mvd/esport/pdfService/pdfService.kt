@@ -1,6 +1,7 @@
 package com.mvd.esport.pdfService
 
 
+import android.media.ExifInterface
 import android.os.Environment
 import android.util.Log
 import com.itextpdf.text.*
@@ -88,7 +89,36 @@ class pdfService {
         return paragraph
     }
 
-    //TODO: créer une fonction qui va inclure l'image de l'utilisateur.
+    //TODO : Fonction qui scale l'image based on la taille de la feuille au besoin.
+    //https://stackoverflow.com/questions/11120775/itext-image-resize
+    private fun resizePhoto(document: Document, image : Image): Image {
+        val documentWidth: Float =
+            document.pageSize.width - document.leftMargin() - document.rightMargin()
+        val documentHeight: Float =
+            document.pageSize.height - document.topMargin() - document.bottomMargin()
+
+        if (image.height > documentHeight || image.width > documentWidth) {
+            image.scaleToFit(documentWidth, documentHeight)
+        }
+
+        return image
+    }
+
+    //TODO : Fonction qui rotate l'image selon l'EXIF. Un peu copier coller de la fonction rotateImage() dans MainActivity.
+    private fun rotateImage(path : String): Float {
+        val exif = ExifInterface(path) //va chercher metadonnee EXIF
+        var rotate = 0F
+        val orientation = exif.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_NORMAL
+        )
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotate = 270F
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotate = 180F
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotate = 90F
+        }
+        return -rotate //pour une certaine raison, rotate normal flip l'image vers le mauvais sense. lmao
+    }
 
     //temps de créer une fonction pour générer un PDF!
     fun createUserTable(
@@ -137,7 +167,10 @@ class pdfService {
         //TODO : Au besoin : Resize l'image pour qu'elle "fit" dans la page.
         try {
             if (imageUser.isNotBlank()){ //si le string n'est pas vide
-                document.add(Image.getInstance(imageUser)) //essaye d'ajouter l'image
+                val image = resizePhoto(document,Image.getInstance(imageUser))
+                val rotate = rotateImage(imageUser)
+                image.setRotationDegrees(rotate)
+                document.add(image) //essaye d'ajouter l'image
             }
         }catch (ex : java.io.FileNotFoundException){ //si l'utilisateur delete l'image apres l'avoir choisis, fait rien avec l'image.
             Log.e(TAG,ex.toString())
