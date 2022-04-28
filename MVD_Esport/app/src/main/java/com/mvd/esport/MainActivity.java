@@ -35,14 +35,10 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-<<<<<<< Updated upstream
-import java.io.FileNotFoundException;
-=======
 import com.mvd.esport.data.donneesUtilisateur;
 import com.mvd.esport.pdfService.pdfFunctions;
 
 import java.io.IOException;
->>>>>>> Stashed changes
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -71,19 +67,31 @@ public class MainActivity extends AppCompatActivity {
     EditText inputÉquipe;
     //fin time et date picker
 
+    //victor - Données utilisateurs et sélecteurs pour les text restants.
+    EditText inputNom;
+    EditText inputActivite;
+    EditText inputpersonelle;
+    Spinner choixintense;
+    ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
+    Button pdfButton;
+    //pdfFunctions : Class que j'ai créer pour travailler avec les fonctions kotlins pour créer un PDF. parce que utiliser les services de pdfServices directement était awkward lol.
+    pdfFunctions pdfFunctions;
+
+
     public static float convertDpToPixel(float dp, Context context){
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle outState) {
         Log.d(TAG, "onCreate: ");
-        super.onCreate(savedInstanceState);
+        super.onCreate(outState);
 
         setContentView(R.layout.activity_main);
         initialisationInterface();
         initialisationPickers();
         initialisationPhoto();
+        initAdditionel();
     }
 
     @Override
@@ -98,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putString("date", dateText.getText().toString());
         outState.putString("objectifPersonnel", inputpersonelle.getText().toString());
         outState.putString("durée", timeText.getText().toString());
-        outState.putInt("intensité", choixintense.getSelectedItemPosition());
+        outState.putString("intensité", choixintense.getSelectedItem().toString());
     }
 
     @Override
@@ -106,13 +114,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         // Restore UI state from the savedInstanceState.
         // This bundle has also been passed to onCreate.
-        inputNom.setText(savedInstanceState.getString("nom"));
-        inputÉquipe.setText(savedInstanceState.getString("équipe"));
-        inputActivite.setText(savedInstanceState.getString("activitéPratiquée"));
-        dateText.setText(savedInstanceState.getString("date"));
-        inputpersonelle.setText(savedInstanceState.getString("objectifPersonnel"));
-        timeText.setText(savedInstanceState.getString("durée"));
-        choixintense.setSelection(savedInstanceState.getInt("intensité"));
+        String nom = savedInstanceState.getString("nom");
+        String équipe = savedInstanceState.getString("équipe");
+        String activitéPratiquée = savedInstanceState.getString("activitéPratiquée");
+        String date = savedInstanceState.getString("date");
+        String objectifPersonnel = savedInstanceState.getString("objectifPersonnel");
+        String durée = savedInstanceState.getString("durée");
+        String intensité = savedInstanceState.getString("intensité");
     }
 
     //créateur: David Mamina
@@ -132,19 +140,26 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //accès à la galerie du téléphone
                 //https://stackoverflow.com/questions/43519311/java-io-filenotfoundexception-permission-denied-when-saving-image
-                if (Build.VERSION.SDK_INT >= 23) {
-                    int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                    }
-                    else{
-                        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(galleryIntent, 1);
-                    }
+                if (check_Write_perm()) {
+                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(galleryIntent, 1);
                 }
             }
         });
     }
+
+    //Victor - Fonction qui retourne faux si permission n'est pas granted, vrai si granted,
+    public boolean check_Write_perm(){
+        if (Build.VERSION.SDK_INT >= 23) {
+            int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        return true;
+    }
+
     //https://medium.com/kinandcartacreated/finally-a-clean-way-to-deal-with-permissions-in-android-539786a7846
     //créateur: David Mamina
     public void onActivityResult(int RequestCode, int resultCode, Intent data)
@@ -165,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
             String imgPath = cursor.getString(columnIndex);
             cursor.close();
 
-                //recuperation image
-                Bitmap image = BitmapFactory.decodeFile((imgPath));
+            //recuperation image
+            Bitmap image = BitmapFactory.decodeFile((imgPath));
             ExifInterface ei = null;
             try {
                 ei = new ExifInterface(imgPath);
@@ -196,9 +211,9 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     rotatedBitmap = image;
             }
-                //affiche
-                imgPhoto.setImageBitmap(image);
-            }
+            //affiche
+            imgPhoto.setImageBitmap(image);
+        }
         else
         {
             Toast.makeText(this, "Aucune image sélectionnée", Toast.LENGTH_LONG).show();
@@ -247,11 +262,37 @@ public class MainActivity extends AppCompatActivity {
         btnVoirEntrainement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        Intent intent = new Intent(MainActivity.this, voirEntrainement.class);
-                        startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, voirEntrainement.class);
+                startActivity(intent);
             }
         });
     }
+
+    //Créateur: Victor Bélanger
+    public void initAdditionel(){
+        inputNom = findViewById(R.id.editTextTextPersonName);
+        inputActivite = findViewById(R.id.editTextActivitéPhysique);
+        inputpersonelle = findViewById(R.id.editTextObjectifPersonnel);
+        choixintense = findViewById(R.id.choixIntensité);
+
+        pdfFunctions = new pdfFunctions(this);
+
+        //Code lié au button PDF
+        //Ayyy j'aime don ben ça de faire les event avec une fonction lambda <3
+        //"the more I know"
+        pdfButton = findViewById(R.id.sauvegardeExercice);
+        pdfButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dataUser.clear();
+                dataUser.add(new donneesUtilisateur(inputNom.getText().toString(),inputÉquipe.getText().toString(),inputActivite.getText().toString(),dateText.getText().toString(),inputpersonelle.getText().toString(),timeText.getText().toString(),choixintense.getSelectedItem().toString())   );
+                if(check_Write_perm()){
+                    pdfFunctions.createPdf(dataUser);
+                }
+            }
+        });
+    }
+
     //créateur: Maxime Paulin
     public void initialisationPickers(){
         dateText.setOnClickListener(new View.OnClickListener() {
