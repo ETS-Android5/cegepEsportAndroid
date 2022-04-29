@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity{
     pdfFunctions pdfFunctions;
     String imgPath = " ";
 
-    //voirEntrainement
+    ////Maxime - voirEntrainement
     public Button btnVoirEntrainement;
 
     //Maxime
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity{
         super.onPointerCaptureChanged(hasCapture);
     }
 
-
+    //Maxime
     public static float convertDpToPixel(float dp, Context context){
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
@@ -146,10 +146,10 @@ public class MainActivity extends AppCompatActivity{
             //accès à la galerie du téléphone
             //https://stackoverflow.com/questions/43519311/java-io-filenotfoundexception-permission-denied-when-saving-image
             if (check_Write_perm()) {
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(galleryIntent, 1);
-                }
-            });
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(galleryIntent, 1);
+            }
+        });
     }
 
     //Victor - Fonction qui retourne faux si permission n'est pas granted, vrai si granted,
@@ -182,13 +182,13 @@ public class MainActivity extends AppCompatActivity{
             imgPath = cursor.getString(columnIndex);
             cursor.close();
 
-                //recuperation image
-                //Victor - J'ai butchered un peu le code "for the greater good"
-                Bitmap image = null;
-                try { image = rotateImage(null, imgPath); } catch (IOException e) { Log.e(TAG,e.toString()); }
-                //affiche l'image
-                imgPhoto.setImageBitmap(image);
-            }
+            //recuperation image
+            //Victor - J'ai butchered un peu le code "for the greater good"
+            Bitmap image = null;
+            try { image = rotateImage(null, imgPath); } catch (IOException e) { Log.e(TAG,e.toString()); }
+            //affiche l'image
+            imgPhoto.setImageBitmap(image);
+        }
         else
         {
             Toast.makeText(this, "Aucune image sélectionnée", Toast.LENGTH_LONG).show();
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity{
 
     //créateur: Maxime Paulin
     public void initialisationInterface(){
-        btnVoirEntrainement = findViewById(R.id.voirEntrainement);
+        btnVoirEntrainement = findViewById(R.id.voirEntrainement2);
         dateText = findViewById(R.id.editTextDate);
         timeText = findViewById(R.id.editTextDurée);
         inputEquipe = findViewById(R.id.editTextNomEquipe);
