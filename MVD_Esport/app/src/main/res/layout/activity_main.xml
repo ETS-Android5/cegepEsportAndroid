@@ -9,7 +9,7 @@
 
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/editTextTextPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextNomEquipe2"
+        android:id="@+id/editTextNomEquipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -31,7 +31,7 @@
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
 
     <Button
@@ -43,7 +43,7 @@
         android:layout_marginBottom="50dp"
         android:text="Exportation"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnRetour"
+        app:layout_constraintStart_toEndOf="@+id/btnPhoto"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
     <TextView
@@ -80,7 +80,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNomEquipe2"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNomEquipe"
         tools:ignore="SpeakableTextPresentCheck">
 
         <HorizontalScrollView
@@ -114,7 +114,7 @@
                         android:text="@string/labelActivité" />
 
                     <EditText
-                        android:id="@+id/editTextActivitéPhysique2"
+                        android:id="@+id/editTextActivitéPhysique"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -141,7 +141,7 @@
                         android:text="Date : " />
 
                     <EditText
-                        android:id="@+id/editTextDate2"
+                        android:id="@+id/editTextDate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -168,7 +168,7 @@
                         android:text="Objectif Personnel :" />
 
                     <EditText
-                        android:id="@+id/editTextObjectifPersonnel2"
+                        android:id="@+id/editTextObjectifPersonnel"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -195,7 +195,7 @@
                         android:text="@string/labelDurée" />
 
                     <EditText
-                        android:id="@+id/editTextDurée2"
+                        android:id="@+id/editTextDurée"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -222,7 +222,7 @@
                         android:text="@string/labelIntensité" />
 
                     <Spinner
-                        android:id="@+id/choixIntensité2"
+                        android:id="@+id/choixIntensité"
                         android:layout_width="match_parent"
                         android:layout_height="35dp"
                         android:layout_marginStart="4dp"
@@ -241,7 +241,7 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/btnRetour"
+        android:id="@+id/btnPhoto"
         android:layout_width="142dp"
         android:layout_height="38dp"
         android:layout_marginStart="10dp"
@@ -263,6 +263,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRetour" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPhoto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
