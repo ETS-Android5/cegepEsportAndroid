@@ -4,7 +4,6 @@
 
     <!-- Pour PDF -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <!-- ######## -->
     <!-- Pour Photo -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -31,6 +30,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".voirEntrainement"
+            android:exported="true" />
+        <!-- Important pour travailler avec Android 11 et + -->
+
     </application>
 
 </manifest>
