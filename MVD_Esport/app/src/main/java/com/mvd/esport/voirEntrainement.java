@@ -13,7 +13,7 @@ public class voirEntrainement extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.voir_entrainement);
-        btnRetour = findViewById(R.id.btnPhoto);
+        btnRetour = findViewById(R.id.btnRetour);
 
         btnRetour.setOnClickListener(v -> finish());
     }
