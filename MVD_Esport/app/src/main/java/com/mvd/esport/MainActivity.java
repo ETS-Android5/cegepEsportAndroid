@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity{
     pdfFunctions pdfFunctions;
     String imgPath = " ";
 
+
     //voirEntrainement
     public Button btnVoirEntrainement;
 
@@ -83,7 +84,6 @@ public class MainActivity extends AppCompatActivity{
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
-
 
     public static float convertDpToPixel(float dp, Context context){
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
     }
-
+  
     //Victor - Fonction qui retourne faux si permission n'est pas granted, vrai si granted,
     public boolean check_Write_perm(){
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
