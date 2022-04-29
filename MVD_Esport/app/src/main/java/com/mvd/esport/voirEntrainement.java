@@ -20,8 +20,7 @@ public class voirEntrainement extends AppCompatActivity {
         btnRetour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(voirEntrainement.this, MainActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

@@ -36,7 +36,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.mvd.esport.data.donneesUtilisateur;
-import com.mvd.esport.pdfService.pdfFunctions;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
     Button pdfButton;
     //pdfFunctions : Class que j'ai créer pour travailler avec les fonctions kotlins pour créer un PDF. parce que utiliser les services de pdfServices directement était awkward lol.
-    pdfFunctions pdfFunctions;
 
 
     public static float convertDpToPixel(float dp, Context context){
@@ -114,13 +112,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         // Restore UI state from the savedInstanceState.
         // This bundle has also been passed to onCreate.
-        String nom = savedInstanceState.getString("nom");
-        String équipe = savedInstanceState.getString("équipe");
-        String activitéPratiquée = savedInstanceState.getString("activitéPratiquée");
-        String date = savedInstanceState.getString("date");
-        String objectifPersonnel = savedInstanceState.getString("objectifPersonnel");
-        String durée = savedInstanceState.getString("durée");
-        String intensité = savedInstanceState.getString("intensité");
+        inputNom.setText(savedInstanceState.getString("nom"));
+        inputÉquipe.setText(savedInstanceState.getString("équipe"));
+        inputActivite.setText(savedInstanceState.getString("activitéPratiquée"));
+        dateText.setText(savedInstanceState.getString("date"));
+        inputpersonelle.setText(savedInstanceState.getString("objectifPersonnel"));
+        timeText.setText(savedInstanceState.getString("durée"));
+        choixintense.setSelection(savedInstanceState.getInt("intensité"));
     }
 
     //créateur: David Mamina
@@ -229,10 +227,10 @@ public class MainActivity extends AppCompatActivity {
 
     //créateur: Maxime Paulin
     public void initialisationInterface(){
-        btnVoirEntrainement = (Button) findViewById(R.id.voirEntrainement);
-        dateText = (EditText) findViewById(R.id.editTextDate);
-        timeText = (EditText) findViewById(R.id.editTextDurée);
-        inputÉquipe = (EditText) findViewById(R.id.editTextNomEquipe);
+        btnVoirEntrainement = (Button) findViewById(R.id.voirEntrainement2);
+        dateText = (EditText) findViewById(R.id.editTextDate2);
+        timeText = (EditText) findViewById(R.id.editTextDurée2);
+        inputÉquipe = (EditText) findViewById(R.id.editTextNomEquipe2);
         dateText.setInputType(InputType.TYPE_NULL);
         timeText.setInputType(InputType.TYPE_NULL);
 
@@ -254,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        Spinner sItems = (Spinner) findViewById(R.id.choixIntensité);
+        Spinner sItems = (Spinner) findViewById(R.id.choixIntensité2);
         sItems.setAdapter(adapter);
         sItems.setSelection(1);
         //fin choix équipe
@@ -270,12 +268,11 @@ public class MainActivity extends AppCompatActivity {
 
     //Créateur: Victor Bélanger
     public void initAdditionel(){
-        inputNom = findViewById(R.id.editTextTextPersonName);
-        inputActivite = findViewById(R.id.editTextActivitéPhysique);
-        inputpersonelle = findViewById(R.id.editTextObjectifPersonnel);
-        choixintense = findViewById(R.id.choixIntensité);
+        inputNom = findViewById(R.id.editTextTextPersonName2);
+        inputActivite = findViewById(R.id.editTextActivitéPhysique2);
+        inputpersonelle = findViewById(R.id.editTextObjectifPersonnel2);
+        choixintense = findViewById(R.id.choixIntensité2);
 
-        pdfFunctions = new pdfFunctions(this);
 
         //Code lié au button PDF
         //Ayyy j'aime don ben ça de faire les event avec une fonction lambda <3
@@ -287,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                 dataUser.clear();
                 dataUser.add(new donneesUtilisateur(inputNom.getText().toString(),inputÉquipe.getText().toString(),inputActivite.getText().toString(),dateText.getText().toString(),inputpersonelle.getText().toString(),timeText.getText().toString(),choixintense.getSelectedItem().toString())   );
                 if(check_Write_perm()){
-                    pdfFunctions.createPdf(dataUser);
+
                 }
             }
         });

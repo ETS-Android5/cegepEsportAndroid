@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="deploymentTargetDropDown">
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
     <runningDeviceTargetSelectedWithDropDown>
-=======
-    <targetSelectedWithDropDown>
->>>>>>> Stashed changes
       <Target>
-        <type value="QUICK_BOOT_TARGET" />
+        <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
@@ -16,26 +11,7 @@
           </Key>
         </deviceKey>
       </Target>
-<<<<<<< Updated upstream
     </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-04-20T20:06:01.761331500Z" />
-=======
-    <targetSelectedWithDropDown>
-      <Target>
-        <type value="QUICK_BOOT_TARGET" />
-        <deviceKey>
-          <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\paum\.android\avd\Pixel_XL_API_32_1.avd" />
-          </Key>
-        </deviceKey>
-      </Target>
-    </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-04-27T17:35:18.239617700Z" />
->>>>>>> Stashed changes
-=======
-    </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-04-25T19:48:00.467134500Z" />
->>>>>>> Stashed changes
+    <timeTargetWasSelectedWithDropDown value="2022-04-29T13:16:11.959691200Z" />
   </component>
 </project>
