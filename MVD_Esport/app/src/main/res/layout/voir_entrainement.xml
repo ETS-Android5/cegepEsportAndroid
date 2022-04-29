@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainActivity"
+    android:id="@+id/voirEntrainement"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".voirEntrainement">
 
 
     <EditText
@@ -33,19 +33,6 @@
         android:minHeight="48dp"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
-
-    <Button
-        android:id="@+id/sauvegardeExercice"
-        android:layout_width="164dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="50dp"
-        android:text="Exportation"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnPhoto"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
     <TextView
         android:id="@+id/textView"
@@ -245,24 +232,11 @@
         android:id="@+id/btnPhoto"
         android:layout_width="142dp"
         android:layout_height="38dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginBottom="50dp"
-        android:text="choix photo"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="36dp"
+        android:text="Retour"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
-
-    <Button
-        android:id="@+id/voirEntrainement"
-        android:layout_width="237dp"
-        android:layout_height="38dp"
-        android:layout_marginBottom="3dp"
-        android:text="voir entrainements"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPhoto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
