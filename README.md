@@ -1,8 +1,6 @@
-# cegepEsportAndroid
+# TODO
 
-#TODO
-
-##Pour la base de données :
+### Pour la base de données :
 
 Sample Code
 ```Java
