@@ -7,7 +7,7 @@
     <string name="labelObjectifPerso">Personal record :</string>
     <string name="labelDurée">Time :</string>
     <string name="labelIntensité">Intensity :</string>
-    <string name="inputDateText">Click here to enter today\'s date!</string>
+    <string name="inputDateText">Click here to enter the date!</string>
     <string name="inputDuréeText">Click here to enter your time!</string>
     <string name="labelActivité">Activity performed :</string>
     <string-array name="choixIntensité">

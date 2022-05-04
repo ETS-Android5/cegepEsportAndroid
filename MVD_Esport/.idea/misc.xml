@@ -3,16 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Maxim/Desktop/MVD_BonneVersion/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.3109375" />
+        <entry key="..\:/Users/Maxim/Desktop/MVD_BonneVersion/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/voir_entrainement.xml" value="0.55" />
         <entry key="..\:/Users/belv/Desktop/github-test/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
         <entry key="..\:/Users/belv/Documents/GitHub/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.18819655521783182" />
         <entry key="..\:/Users/belv/Documents/GitHub/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/voir_entrainement.xml" value="0.30416666666666664" />
         <entry key="..\:/Users/paum/Desktop/MVD_BonneVersion/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/paum/Desktop/MVD_BonneVersion/cegepEsportAndroid/MVD_Esport/app/src/main/res/layout/voir_entrainement.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/paum/Desktop/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/paum/Desktop/MVD_Esport2/MVD_Esport/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
