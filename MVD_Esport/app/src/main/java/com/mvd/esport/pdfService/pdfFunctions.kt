@@ -12,8 +12,18 @@ import java.io.File
 
 class pdfFunctions(context: MainActivity) { //param constructeur sont ici!
 
+    /**
+     * paramThis : Le context de l'application.
+     */
     private val paramThis: Context = context // Passe variable en param a l'objet.
 
+    /**
+     * createPdf
+     *
+     * Procédure qui va chercher la fonction createUserTable de pdfService pour créer un document PDF.
+     * @param userData les données entrées dans l'utilisateur
+     * @param image le chemin de l'image
+     */
     fun createPdf(userData: List<donneesUtilisateur>, image: String) { //fonction qui va creer le pdf
         val onFinish: (File) -> Unit = { openFile(it) } // <-- la seul raison pourquoi je travaille encore en Kotlin :P
         val pdfService = pdfService()
@@ -21,6 +31,9 @@ class pdfFunctions(context: MainActivity) { //param constructeur sont ici!
     }
 
     //https://github.com/annasta13/Pdf-Export
+    /**
+     * openFile
+     */
     fun openFile(file: File) {
         val path = FileHandler().getPathFromUri(paramThis, file.toUri())
         val pdfFile = File(path)
@@ -37,6 +50,9 @@ class pdfFunctions(context: MainActivity) { //param constructeur sont ici!
         }
     }
 
+    /**
+     * toastErrorMessage
+     */
     fun toastErrorMessage(s: String) {
         Toast.makeText(paramThis, s, Toast.LENGTH_SHORT).show()
     }
