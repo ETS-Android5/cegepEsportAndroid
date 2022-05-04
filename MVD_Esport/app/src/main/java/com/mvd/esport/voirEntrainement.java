@@ -48,11 +48,13 @@ public class voirEntrainement extends AppCompatActivity {
     EditText inputpersonelle;
     EditText choixintense;
     int nombreSemaine = 0;
-    String TAG;
+    String TAG = "voirEntrainement";
     int semaineChoisis = 0;
 
     // you need to have a list of data that you want the spinner to display
     List<String> choixSemaine =  new ArrayList<String>();
+    ArrayAdapter<String> adapter; //s'assurer que l'adapter n'est jamais détruit.
+    Spinner sItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +67,9 @@ public class voirEntrainement extends AppCompatActivity {
         helper = new SQLiteOpenHelper(this, "DataSemaine.db", null, 1) {
             @Override
             public void onCreate(SQLiteDatabase db) {
-                //création d'une table
-                db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT)");
             }
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-                db.execSQL(" DROP TABLE Esport");
-                onCreate(db);
-                Log.d(TAG, "onUpgrade(): Mise à jour de la BD de la version " + oldVersion + " à la version " + newVersion);
             }
         };
 
@@ -88,11 +85,18 @@ public class voirEntrainement extends AppCompatActivity {
             for (int i = 0; i < nombreSemaine; i++) {
                 choixSemaine.add(String.valueOf(i));
             }
-            btnAfficher.callOnClick();
         }
         else{
             Toast.makeText(this, "Au minimum un rapport est nécessaire pour faire afficher les rapports antérieurs", Toast.LENGTH_SHORT).show();
         }
+
+        adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, choixSemaine);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sItems = (Spinner) findViewById(R.id.choixSemaine);
+        sItems.setAdapter(adapter);
+
     }
 
     public void initMainLayout(){
@@ -106,13 +110,6 @@ public class voirEntrainement extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this, android.R.layout.simple_spinner_item, choixSemaine);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner sItems = (Spinner) findViewById(R.id.choixSemaine);
-        sItems.setAdapter(adapter);
-
         btnAfficher = findViewById(R.id.btnAfficher);
         btnAfficher.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,10 +117,11 @@ public class voirEntrainement extends AppCompatActivity {
                 //Lit une  entré dans la BD
                 semaineChoisis = sItems.getSelectedItemPosition();
                 //https://stackoverflow.com/questions/50441874/rawquery-formatting
-                Cursor c2 = database.rawQuery("SELECT * FROM Esport WHERE rowid = " + semaineChoisis, null);
+                Cursor c2 = database.rawQuery("SELECT * FROM Esport WHERE _Id = " + semaineChoisis, null);
                 c2.moveToNext();
+                Log.d(TAG, String.valueOf(semaineChoisis));
                 // test pour afficher un champ de la BD à l'écran
-                //inputNom.setText(c2.getString(1));
+                inputNom.setText(c2.getString(1));
             }
         });
 

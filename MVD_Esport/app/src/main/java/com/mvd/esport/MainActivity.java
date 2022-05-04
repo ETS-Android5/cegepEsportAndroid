@@ -294,8 +294,8 @@ public class MainActivity extends AppCompatActivity{
             //va chercher les droits d'écriture
             database = helper.getWritableDatabase();
             //entre dans la BD les champs du layout Principal
-            database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity) VALUES ('" + inputNom.getText() + "', '" + inputEquipe.getText()+ "', '"
-                    + inputActivite.getText()+ "', '" + dateText.getText()+ "', '" + timeText.getText()+ "', '" + inputpersonelle.getText()+ "', '" + choixintense.getSelectedItem().toString()+ "')");
+            database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity) VALUES ('" + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString()+ "', '"
+                    + inputActivite.getText().toString()+ "', '" + dateText.getText().toString()+ "', '" + timeText.getText().toString()+ "', '" + inputpersonelle.getText().toString()+ "', '" + choixintense.getSelectedItem().toString()+ "')");
             //fin du module database
             dataUser.clear();
 
@@ -313,6 +313,9 @@ public class MainActivity extends AppCompatActivity{
         });
     }
     //Maxime 05-03-17:44 - problème photo règler
+    //Victor: Bruh enleve pas mon commentaire :(
+
+    //Victor - Faque on a un petit probleme avec les images photos : On lis pas la metadonné pour savoir l'orientation de la photo.
     //C'est important de le savoir, car les photos pris par téléphone ne tourne pas l'image a l'enregistrement de l'image pour l'afficher a l'écran comme du monde, ils ont juste foutu des données dans l'image.
     //c'est donc au développeur d'orienter l'image selon les données EXIF the l'image. Fun :)
     //Y'a seulement moi qui peut être lâche dans le monde!!!!!
