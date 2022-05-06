@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -47,6 +48,7 @@ public class voirEntrainement extends AppCompatActivity {
     EditText inputActivite;
     EditText inputpersonelle;
     EditText choixintense;
+    EditText notePerso;
     int nombreSemaine = 0;
     String TAG = "voirEntrainement";
     int semaineChoisis = 0;
@@ -67,6 +69,7 @@ public class voirEntrainement extends AppCompatActivity {
         helper = new SQLiteOpenHelper(this, "DataSemaine.db", null, 1) {
             @Override
             public void onCreate(SQLiteDatabase db) {
+                db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
             }
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -76,19 +79,26 @@ public class voirEntrainement extends AppCompatActivity {
         // pour lire la Bd
         database = helper.getReadableDatabase();
         //ont compte le nombre de semaine que la personne elle à
-        Cursor c = database.rawQuery("SELECT * FROM Esport", null);
-        nombreSemaine = c.getCount();
+        try {
+            Cursor c = database.rawQuery("SELECT * FROM Esport", null);
+            nombreSemaine = c.getCount();
 
-        //si ya des lignes
-        if (nombreSemaine > 0)
-        {
-            for (int i = 1; i < nombreSemaine; i++) {
-                choixSemaine.add(String.valueOf(i));
+            //si ya des lignes
+            if (nombreSemaine > 0)
+            {
+                for (int i = 1; i < nombreSemaine; i++) {
+                    choixSemaine.add(String.valueOf(i));
+                }
+            }else{
+                Toast.makeText(this, "Au minimum un rapport est nécessaire pour faire afficher les rapports antérieurs", Toast.LENGTH_SHORT).show();
+                btnAfficher.setEnabled(false);
             }
+
+        }catch (SQLiteException databaseError){
+            Toast.makeText(this, "Fait un export avant de voir les entrainements", Toast.LENGTH_SHORT).show();
+            btnAfficher.setEnabled(false);
         }
-        else{
-            Toast.makeText(this, "Au minimum un rapport est nécessaire pour faire afficher les rapports antérieurs", Toast.LENGTH_SHORT).show();
-        }
+
 
         adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, choixSemaine);
@@ -129,6 +139,7 @@ public class voirEntrainement extends AppCompatActivity {
                 timeText.setText(c2.getString(5));
                 inputpersonelle.setText(c2.getString(6));
                 choixintense.setText(c2.getString(7));
+                notePerso.setText(c2.getString(8));
             }
         });
 
@@ -142,21 +153,9 @@ public class voirEntrainement extends AppCompatActivity {
         inputpersonelle = findViewById(R.id.voirEntrainementPersonnel);
         timeText = findViewById(R.id.voirEntrainementTemps);
         choixintense = findViewById(R.id.voirEntrainementIntensite);
+        notePerso = findViewById(R.id.voirEntrainementNotePerso);
         //fin formulaire
 
-        //Si la langue du téléphone est en anglais ont tasse la boite de texte équipe pour l'aligné avec la boite nom
-        if(Locale.getDefault().getLanguage().equals("en")){
-            //https://stackoverflow.com/questions/52148129/programmatically-set-margin-to-constraintlayout
-            //Prend les paramètres du Layouts en lien avec la boite de texte équipe
-            ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) inputEquipe.getLayoutParams();
-
-            //ont change la marge pour tassé le texte
-            newLayoutParams.topMargin = (int) convertDpToPixel(-23.0f,this);
-            newLayoutParams.leftMargin = (int) convertDpToPixel(36.0f,this);
-            newLayoutParams.rightMargin = 0;
-            //applique les modifications
-            inputEquipe.setLayoutParams(newLayoutParams);
-        }
     }
 
     public static float convertDpToPixel(float dp, Context context){

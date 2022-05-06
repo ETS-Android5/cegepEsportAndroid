@@ -19,17 +19,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+
 import androidx.exifinterface.media.ExifInterface;
+
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
 
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 
@@ -52,16 +52,15 @@ import java.util.Calendar;
 import java.util.Locale;
 
 /**********************************************************************
-    Autheurs : Victor Bélanger, Maxime Paulin, David Mamina
-    Créer le : 04-01-2022
+ Autheurs : Victor Bélanger, Maxime Paulin, David Mamina
+ Créer le : 04-01-2022
 
-    but du programme: Une application pour que les athlètes
-    de E-sport au cégep de sept-îles puisent prendre en note
-    leurs heures d'entrainments
-
+ but du programme: Une application pour que les athlètes
+ de E-sport au cégep de sept-îles puisent prendre en note
+ leurs heures d'entrainments
  **********************************************************************/
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     // Création d'un object helper nous servant de donné un nom à notre BD et pouvoir la créer
     SQLiteOpenHelper helper;
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity{
     EditText inputActivite;
     EditText inputpersonelle;
     Spinner choixintense;
+    EditText notePerso;
     ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
     Button pdfButton;
     //pdfFunctions : Class que j'ai créer pour travailler avec les fonctions kotlins pour créer un PDF. parce que utiliser les services de pdfServices directement était awkward lol.
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //Maxime
-    public static float convertDpToPixel(float dp, Context context){
+    public static float convertDpToPixel(float dp, Context context) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //créateur: David Mamina
-    public void initModulePhoto(){
+    public void initModulePhoto() {
         //lien avec les objets graphiques
         imgPhoto = findViewById(R.id.imgPhoto);
         btnPhoto = findViewById(R.id.btnPhoto);
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //créateur: David Mamina
-    private void createOnClicPhotoButton(){
+    private void createOnClicPhotoButton() {
         btnPhoto.setOnClickListener(v -> {
             //accès à la galerie du téléphone
             //https://stackoverflow.com/questions/43519311/java-io-filenotfoundexception-permission-denied-when-saving-image
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //Victor - Fonction qui retourne faux si permission n'est pas granted, vrai si granted,
-    public boolean check_Write_perm(){
+    public boolean check_Write_perm() {
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -184,19 +184,17 @@ public class MainActivity extends AppCompatActivity{
 
     //https://medium.com/kinandcartacreated/finally-a-clean-way-to-deal-with-permissions-in-android-539786a7846
     //créateur: David Mamina
-    public void onActivityResult(int RequestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int RequestCode, int resultCode, Intent data) {
 
         super.onActivityResult(RequestCode, resultCode, data);
 
         //vérifie si une image est récupérée
-        if(RequestCode==1 && resultCode==RESULT_OK)
-        { //resulteCode verifie si l'image a été sélectionée
+        if (RequestCode == 1 && resultCode == RESULT_OK) { //resulteCode verifie si l'image a été sélectionée
 
             Uri selectedImage = data.getData();
             String[] filePathColum = {MediaStore.Images.Media.DATA};
             //Cuseur d'accès au chemin de l'image
-            Cursor cursor = this.getContentResolver().query(selectedImage, filePathColum,null,null,null);
+            Cursor cursor = this.getContentResolver().query(selectedImage, filePathColum, null, null, null);
             //position sur la première ligne
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColum[0]);
@@ -206,18 +204,20 @@ public class MainActivity extends AppCompatActivity{
             //recuperation image
             //Victor - J'ai butchered un peu le code "for the greater good"
             Bitmap image = null;
-            try { image = rotateImage(null, imgPath); } catch (IOException e) { Log.e(TAG,e.toString()); }
+            try {
+                image = rotateImage(null, imgPath);
+            } catch (IOException e) {
+                Log.e(TAG, e.toString());
+            }
             //affiche l'image
             imgPhoto.setImageBitmap(image);
-        }
-        else
-        {
+        } else {
             Toast.makeText(this, "Aucune image sélectionnée", Toast.LENGTH_LONG).show();
         }
     }
 
     //créateur: Maxime Paulin
-    public void initMainLayout(){
+    public void initMainLayout() {
         //nom de la personne ansi que son équipe
         inputNom = findViewById(R.id.editTextTextPersonName);
         inputEquipe = findViewById(R.id.editTextNomEquipe);
@@ -232,16 +232,19 @@ public class MainActivity extends AppCompatActivity{
         timeText = findViewById(R.id.editTextDurée);
         choixintense = findViewById(R.id.choixIntensité);
         //fin formulaire
+        //note Perso
+        notePerso = findViewById(R.id.voirEntrainementNotePerso);
+        //fin note Perso
 
         //Si la langue du téléphone est en anglais ont tasse la boite de texte équipe pour l'aligné avec la boite nom
-        if(Locale.getDefault().getLanguage().equals("en")){
+        if (Locale.getDefault().getLanguage().equals("en")) {
             //https://stackoverflow.com/questions/52148129/programmatically-set-margin-to-constraintlayout
             //Prend les paramètres du Layouts en lien avec la boite de texte équipe
             ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) inputEquipe.getLayoutParams();
 
             //ont change la marge pour tassé le texte
-            newLayoutParams.topMargin = (int) convertDpToPixel(-23.0f,this);
-            newLayoutParams.leftMargin = (int) convertDpToPixel(36.0f,this);
+            newLayoutParams.topMargin = (int) convertDpToPixel(-23.0f, this);
+            newLayoutParams.leftMargin = (int) convertDpToPixel(36.0f, this);
             newLayoutParams.rightMargin = 0;
             //applique les modifications
             inputEquipe.setLayoutParams(newLayoutParams);
@@ -266,15 +269,16 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //Créateur: Victor Bélanger
-    public void initModulePDF_BD(){
+    public void initModulePDF_BD() {
 
         //Initialisation de helper pour créer la BD, tables ...
         helper = new SQLiteOpenHelper(MainActivity.this, "DataSemaine.db", null, 1) {
             @Override
             public void onCreate(SQLiteDatabase db) {
                 //création d'une table
-                db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT)");
+                db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
             }
+
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
                 db.execSQL(" DROP TABLE Esport");
@@ -294,20 +298,20 @@ public class MainActivity extends AppCompatActivity{
             //va chercher les droits d'écriture
             database = helper.getWritableDatabase();
             //entre dans la BD les champs du layout Principal
-            database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity) VALUES ('" + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString()+ "', '"
-                    + inputActivite.getText().toString()+ "', '" + dateText.getText().toString()+ "', '" + timeText.getText().toString()+ "', '" + inputpersonelle.getText().toString()+ "', '" + choixintense.getSelectedItem().toString()+ "')");
+            database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity, Note) VALUES ('" + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString() + "', '"
+                    + inputActivite.getText().toString() + "', '" + dateText.getText().toString() + "', '" + timeText.getText().toString() + "', '"
+                    + inputpersonelle.getText().toString() + "', '" + choixintense.getSelectedItem().toString() + "', '" + notePerso.getText().toString() + "')");
             //fin du module database
             dataUser.clear();
 
-            dataUser.add(new donneesUtilisateur(inputNom.getText().toString(), inputEquipe.getText().toString(),inputActivite.getText().toString(),
-                    dateText.getText().toString(),inputpersonelle.getText().toString(),timeText.getText().toString(),choixintense.getSelectedItem().toString()));
+            dataUser.add(new donneesUtilisateur(inputNom.getText().toString(), inputEquipe.getText().toString(), inputActivite.getText().toString(),
+                    dateText.getText().toString(), inputpersonelle.getText().toString(), timeText.getText().toString(), choixintense.getSelectedItem().toString(), notePerso.getText().toString()));
 
             //maxime 05-03-2022 18:27: J'ai ajouter des Toasts pour avertir les utilisateurs
-            if(check_Write_perm()){
+            if (check_Write_perm()) {
                 pdfFunctions.createPdf(dataUser, imgPath);
                 Toast.makeText(this, "PDF créer", Toast.LENGTH_SHORT).show();
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Veuillez appliquer les accès", Toast.LENGTH_SHORT).show();
             }
         });
@@ -324,7 +328,7 @@ public class MainActivity extends AppCompatActivity{
     //https://gist.github.com/tomogoma/788e3b775dd611c9226f8e17781a0f0c
     public static Bitmap rotateImage(Bitmap bitmap, String path) throws IOException {
 
-        if(bitmap == null){ //si l'image n'existe pas. va la créer
+        if (bitmap == null) { //si l'image n'existe pas. va la créer
             bitmap = BitmapFactory.decodeFile(path);
         }
 
@@ -350,7 +354,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //créateur: Maxime Paulin
-    public void initPickers(){
+    public void initPickers() {
         dateText.setOnClickListener(v -> {
             final Calendar cldr = Calendar.getInstance();
             int day = cldr.get(Calendar.DAY_OF_MONTH);
@@ -369,10 +373,9 @@ public class MainActivity extends AppCompatActivity{
             // timme picker dialog
             timePickerDialog = new TimePickerDialog(MainActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                     (view1, heure1, minute1) -> {
-                        if(Locale.getDefault().getLanguage().equals("en")){
+                        if (Locale.getDefault().getLanguage().equals("en")) {
                             timeText.setText(heure1 + " Hour(s)" + " and " + minute1 + " minute(s)");
-                        }
-                        else{
+                        } else {
                             timeText.setText(heure1 + " Heure(s)" + " et " + minute1 + " minute(s)");
                         }
                     }, heure, minute, true);

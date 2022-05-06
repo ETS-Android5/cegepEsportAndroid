@@ -10,6 +10,8 @@
     <string name="inputDateText">Click ici pour entrez la date!</string>
     <string name="inputDuréeText">Click ici pour entrez le temps!</string>
     <string name="semaineAfficher">Semaine à afficher :</string>
+    <string name="textNotePerso">Note personnelle :</string>
+    <string name="databaseError">Fait un export avant de voir les entrainements</string>
     <string-array name="choixIntensité">
         <item>Faible</item>
         <item>Moyen</item>

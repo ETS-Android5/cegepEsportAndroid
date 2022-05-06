@@ -15,4 +15,7 @@
         <item>Moderate</item>
         <item>Vigorous</item>
     </string-array>
+    <string name="textNotePerso">Personal note :</string>
+    <string name="semaineAfficher">Week to display :</string>
+    <string name="databaseError">Do an export before use</string>
 </resources>
