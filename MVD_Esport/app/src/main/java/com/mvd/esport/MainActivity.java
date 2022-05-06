@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity{
             int year = cldr.get(Calendar.YEAR);
             // date picker dialog
             datePickerDialog = new DatePickerDialog(MainActivity.this,
-                    (view, year1, monthOfYear, dayOfMonth) -> dateText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1), year, month, day);
+                    (view, year1, monthOfYear, dayOfMonth) -> dateText.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year1), year, month, day);
             datePickerDialog.show();
         });
         //https://codedocu.com/Google/Android/Development/Android-Controls/Android-TimePickerDialog---Digital-Layout?2664

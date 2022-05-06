@@ -82,7 +82,7 @@ public class voirEntrainement extends AppCompatActivity {
         //si ya des lignes
         if (nombreSemaine > 0)
         {
-            for (int i = 0; i < nombreSemaine; i++) {
+            for (int i = 1; i < nombreSemaine; i++) {
                 choixSemaine.add(String.valueOf(i));
             }
         }
@@ -115,13 +115,20 @@ public class voirEntrainement extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Lit une  entré dans la BD
-                semaineChoisis = sItems.getSelectedItemPosition();
+                semaineChoisis = Integer.parseInt(sItems.getSelectedItem().toString());
                 //https://stackoverflow.com/questions/50441874/rawquery-formatting
                 Cursor c2 = database.rawQuery("SELECT * FROM Esport WHERE _Id = " + semaineChoisis, null);
                 c2.moveToNext();
                 Log.d(TAG, String.valueOf(semaineChoisis));
-                // test pour afficher un champ de la BD à l'écran
+
+                //Affiche les données à l'écran
                 inputNom.setText(c2.getString(1));
+                inputEquipe.setText(c2.getString(2));
+                inputActivite.setText(c2.getString(3));
+                dateText.setText(c2.getString(4));
+                timeText.setText(c2.getString(5));
+                inputpersonelle.setText(c2.getString(6));
+                choixintense.setText(c2.getString(7));
             }
         });
 

@@ -27,9 +27,8 @@ class pdfService {
 
     private val TAG = "pdfService"
 
-    private fun createFile(): File {
+    private fun createFile(title : String): File {
         //Prepare file
-        val title = "Pdf to export.pdf" //TODO: Renommer le fichier pour quelque chose de plus significatif. Une date avec le nom de l'app, peut-être?
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) //TODO: Le fichier Downloads est intéressant. Fait-on notre propre dossier au lieu?
         val file = File(path, title)
         if (!file.exists()) file.createNewFile()
@@ -128,7 +127,7 @@ class pdfService {
         onFinish: (file: File) -> Unit,
     ){
         //Define the document
-        val file = createFile()
+        val file = createFile(data[0].nom + " - " + data[0].activitePratique +" (" + data[0].date + ").pdf")
         val document = createDocument()
         //Setup PDF Writer
         setupPdfWriter(document, file)
@@ -164,7 +163,7 @@ class pdfService {
 
 
         //ajoute la photo au PDF
-        //TODO : Au besoin : Resize l'image pour qu'elle "fit" dans la page.
+        //TODO : Au besoin : Resize l'image pour qu'elle "fit" dans la page avec tableau.
         try {
             if (imageUser.isNotBlank()){ //si le string n'est pas vide
                 val image = resizePhoto(document,Image.getInstance(imageUser))
