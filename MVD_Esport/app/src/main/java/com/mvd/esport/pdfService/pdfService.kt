@@ -161,6 +161,8 @@ class pdfService {
         document.add(table2)
         addLineSpace(document,2)
 
+        document.add(createParagraph("Note Personelle : "+data[0].notePerso))
+        addLineSpace(document,2)
 
         //ajoute la photo au PDF
         //TODO : Au besoin : Resize l'image pour qu'elle "fit" dans la page avec tableau.
