@@ -231,10 +231,36 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imgPhoto"
+                <LinearLayout
+                    android:id="@+id/VoirEntrainementLinearLayoutNotePerso"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/voirEntrainementTextNotePerso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/textNotePerso" />
+
+                    <EditText
+                        android:id="@+id/voirEntrainementNotePerso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="30dp"
+                        android:background="@drawable/edittextborders"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="3" />
+
+                    <ImageView
+                        android:id="@+id/imgPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
             </LinearLayout>
         </HorizontalScrollView>

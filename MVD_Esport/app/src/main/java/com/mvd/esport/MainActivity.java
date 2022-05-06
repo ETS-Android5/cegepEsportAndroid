@@ -12,17 +12,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
+
 import androidx.exifinterface.media.ExifInterface;
+
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.provider.MediaStore;
-import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -48,8 +51,20 @@ import java.util.Calendar;
 
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity{
+/**********************************************************************
+ Autheurs : Victor Bélanger, Maxime Paulin, David Mamina
+ Créer le : 04-01-2022
 
+ but du programme: Une application pour que les athlètes
+ de E-sport au cégep de sept-îles puisent prendre en note
+ leurs heures d'entrainments
+ **********************************************************************/
+
+public class MainActivity extends AppCompatActivity {
+
+    // Création d'un object helper nous servant de donné un nom à notre BD et pouvoir la créer
+    SQLiteOpenHelper helper;
+    SQLiteDatabase database;
     private static final String TAG = "MainActivity";
     //section photo
     private ImageView imgPhoto;
@@ -61,14 +76,16 @@ public class MainActivity extends AppCompatActivity{
     TimePickerDialog timePickerDialog;
     EditText dateText;
     EditText timeText;
-    EditText inputEquipe;
+
     //fin time et date picker
 
     //victor - Données utilisateurs et sélecteurs pour les text restants.
     EditText inputNom;
+    EditText inputEquipe;
     EditText inputActivite;
     EditText inputpersonelle;
     Spinner choixintense;
+    EditText notePerso;
     ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
     Button pdfButton;
     //pdfFunctions : Class que j'ai créer pour travailler avec les fonctions kotlins pour créer un PDF. parce que utiliser les services de pdfServices directement était awkward lol.
@@ -85,7 +102,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //Maxime
-    public static float convertDpToPixel(float dp, Context context){
+    public static float convertDpToPixel(float dp, Context context) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
@@ -95,10 +112,13 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        initialisationInterface();
-        initialisationPickers();
-        initialisationPhoto();
-        initAdditionel();
+        //initialise les variables pour le formulaire
+        initMainLayout();
+        initPickers();
+        //initialise le module à David
+        initModulePhoto();
+        //initialise le module à Victor
+        initModulePDF_BD();
     }
 
     //Maxime
@@ -133,7 +153,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //créateur: David Mamina
-    public void initialisationPhoto(){
+    public void initModulePhoto() {
         //lien avec les objets graphiques
         imgPhoto = findViewById(R.id.imgPhoto);
         btnPhoto = findViewById(R.id.btnPhoto);
@@ -141,7 +161,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //créateur: David Mamina
-    private void createOnClicPhotoButton(){
+    private void createOnClicPhotoButton() {
         btnPhoto.setOnClickListener(v -> {
             //accès à la galerie du téléphone
             //https://stackoverflow.com/questions/43519311/java-io-filenotfoundexception-permission-denied-when-saving-image
@@ -153,7 +173,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //Victor - Fonction qui retourne faux si permission n'est pas granted, vrai si granted,
-    public boolean check_Write_perm(){
+    public boolean check_Write_perm() {
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -164,18 +184,17 @@ public class MainActivity extends AppCompatActivity{
 
     //https://medium.com/kinandcartacreated/finally-a-clean-way-to-deal-with-permissions-in-android-539786a7846
     //créateur: David Mamina
-    public void onActivityResult(int RequestCode, int resultCode, Intent data)
-    {
+    public void onActivityResult(int RequestCode, int resultCode, Intent data) {
 
         super.onActivityResult(RequestCode, resultCode, data);
 
         //vérifie si une image est récupérée
-        if(RequestCode==1 && resultCode==RESULT_OK){ //resulteCode verifie si l'image a été sélectionée
+        if (RequestCode == 1 && resultCode == RESULT_OK) { //resulteCode verifie si l'image a été sélectionée
 
             Uri selectedImage = data.getData();
             String[] filePathColum = {MediaStore.Images.Media.DATA};
             //Cuseur d'accès au chemin de l'image
-            Cursor cursor = this.getContentResolver().query(selectedImage, filePathColum,null,null,null);
+            Cursor cursor = this.getContentResolver().query(selectedImage, filePathColum, null, null, null);
             //position sur la première ligne
             cursor.moveToFirst();
             int columnIndex = cursor.getColumnIndex(filePathColum[0]);
@@ -185,47 +204,63 @@ public class MainActivity extends AppCompatActivity{
             //recuperation image
             //Victor - J'ai butchered un peu le code "for the greater good"
             Bitmap image = null;
-            try { image = rotateImage(null, imgPath); } catch (IOException e) { Log.e(TAG,e.toString()); }
+            try {
+                image = rotateImage(null, imgPath);
+            } catch (IOException e) {
+                Log.e(TAG, e.toString());
+            }
             //affiche l'image
             imgPhoto.setImageBitmap(image);
-        }
-        else
-        {
+        } else {
             Toast.makeText(this, "Aucune image sélectionnée", Toast.LENGTH_LONG).show();
         }
     }
 
     //créateur: Maxime Paulin
-    public void initialisationInterface(){
-        btnVoirEntrainement = findViewById(R.id.voirEntrainement2);
-        dateText = findViewById(R.id.editTextDate);
-        timeText = findViewById(R.id.editTextDurée);
+    public void initMainLayout() {
+        //nom de la personne ansi que son équipe
+        inputNom = findViewById(R.id.editTextTextPersonName);
         inputEquipe = findViewById(R.id.editTextNomEquipe);
-        dateText.setInputType(InputType.TYPE_NULL);
-        timeText.setInputType(InputType.TYPE_NULL);
 
-        if(Locale.getDefault().getLanguage().equals("en")){
+        //bouton pour changer d'interface (voir les activités antérieur)
+        btnVoirEntrainement = findViewById(R.id.voirEntrainement2);
+
+        //formulaire
+        inputActivite = findViewById(R.id.editTextActivitéPhysique);
+        dateText = findViewById(R.id.editTextDate);
+        inputpersonelle = findViewById(R.id.editTextObjectifPersonnel);
+        timeText = findViewById(R.id.editTextDurée);
+        choixintense = findViewById(R.id.choixIntensité);
+        //fin formulaire
+        //note Perso
+        notePerso = findViewById(R.id.voirEntrainementNotePerso);
+        //fin note Perso
+
+        //Si la langue du téléphone est en anglais ont tasse la boite de texte équipe pour l'aligné avec la boite nom
+        if (Locale.getDefault().getLanguage().equals("en")) {
             //https://stackoverflow.com/questions/52148129/programmatically-set-margin-to-constraintlayout
-            //tasse le input pour écrire l'équipe parce que le layout en fracais fit mais pas en anglais
-
+            //Prend les paramètres du Layouts en lien avec la boite de texte équipe
             ConstraintLayout.LayoutParams newLayoutParams = (ConstraintLayout.LayoutParams) inputEquipe.getLayoutParams();
 
-            newLayoutParams.topMargin = (int) convertDpToPixel(-23.0f,this);
-            newLayoutParams.leftMargin = (int) convertDpToPixel(36.0f,this);
+            //ont change la marge pour tassé le texte
+            newLayoutParams.topMargin = (int) convertDpToPixel(-23.0f, this);
+            newLayoutParams.leftMargin = (int) convertDpToPixel(36.0f, this);
             newLayoutParams.rightMargin = 0;
+            //applique les modifications
             inputEquipe.setLayoutParams(newLayoutParams);
-
         }
-        //choix intensité combo box - voir resource String pour changer les valeurs
+
+        //choix intensité est un combo box - voir les resource String pour changer les chaines de caractères
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.choixIntensité, android.R.layout.simple_spinner_item);
 
+        //prend la ressource
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         Spinner sItems = findViewById(R.id.choixIntensité);
         sItems.setAdapter(adapter);
+        //modéré par défaut - indice commence à 0
         sItems.setSelection(1);
-        //fin choix équipe
 
         btnVoirEntrainement.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, voirEntrainement.class);
@@ -234,11 +269,23 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //Créateur: Victor Bélanger
-    public void initAdditionel(){
-        inputNom = findViewById(R.id.editTextTextPersonName);
-        inputActivite = findViewById(R.id.editTextActivitéPhysique);
-        inputpersonelle = findViewById(R.id.editTextObjectifPersonnel);
-        choixintense = findViewById(R.id.choixIntensité);
+    public void initModulePDF_BD() {
+
+        //Initialisation de helper pour créer la BD, tables ...
+        helper = new SQLiteOpenHelper(MainActivity.this, "DataSemaine.db", null, 1) {
+            @Override
+            public void onCreate(SQLiteDatabase db) {
+                //création d'une table
+                db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
+            }
+
+            @Override
+            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                db.execSQL(" DROP TABLE Esport");
+                onCreate(db);
+                Log.d(TAG, "onUpgrade(): Mise à jour de la BD de la version " + oldVersion + " à la version " + newVersion);
+            }
+        };
 
         pdfFunctions = new pdfFunctions(this);
 
@@ -246,14 +293,31 @@ public class MainActivity extends AppCompatActivity{
         //Ayyy j'aime don ben ça de faire les event avec une fonction lambda <3
         //"the more I know"
         pdfButton = findViewById(R.id.sauvegardeExercice);
+        //Maxime 05-03-2022 18:15 : J'ai ajouter les lignes à david au bouton export pdf pour écrire dans la BD les champs du Layout
         pdfButton.setOnClickListener(view -> {
+            //va chercher les droits d'écriture
+            database = helper.getWritableDatabase();
+            //entre dans la BD les champs du layout Principal
+            database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity, Note) VALUES ('" + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString() + "', '"
+                    + inputActivite.getText().toString() + "', '" + dateText.getText().toString() + "', '" + timeText.getText().toString() + "', '"
+                    + inputpersonelle.getText().toString() + "', '" + choixintense.getSelectedItem().toString() + "', '" + notePerso.getText().toString() + "')");
+            //fin du module database
             dataUser.clear();
-            dataUser.add(new donneesUtilisateur(inputNom.getText().toString(), inputEquipe.getText().toString(),inputActivite.getText().toString(),dateText.getText().toString(),inputpersonelle.getText().toString(),timeText.getText().toString(),choixintense.getSelectedItem().toString())   );
-            if(check_Write_perm()){
+
+            dataUser.add(new donneesUtilisateur(inputNom.getText().toString(), inputEquipe.getText().toString(), inputActivite.getText().toString(),
+                    dateText.getText().toString(), inputpersonelle.getText().toString(), timeText.getText().toString(), choixintense.getSelectedItem().toString(), notePerso.getText().toString()));
+
+            //maxime 05-03-2022 18:27: J'ai ajouter des Toasts pour avertir les utilisateurs
+            if (check_Write_perm()) {
                 pdfFunctions.createPdf(dataUser, imgPath);
+                Toast.makeText(this, "PDF créer", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Veuillez appliquer les accès", Toast.LENGTH_SHORT).show();
             }
         });
     }
+    //Maxime 05-03-17:44 - problème photo règler
+    //Victor: Bruh enleve pas mon commentaire :(
 
     //Victor - Faque on a un petit probleme avec les images photos : On lis pas la metadonné pour savoir l'orientation de la photo.
     //C'est important de le savoir, car les photos pris par téléphone ne tourne pas l'image a l'enregistrement de l'image pour l'afficher a l'écran comme du monde, ils ont juste foutu des données dans l'image.
@@ -264,7 +328,7 @@ public class MainActivity extends AppCompatActivity{
     //https://gist.github.com/tomogoma/788e3b775dd611c9226f8e17781a0f0c
     public static Bitmap rotateImage(Bitmap bitmap, String path) throws IOException {
 
-        if(bitmap == null){ //si l'image n'existe pas. va la créer
+        if (bitmap == null) { //si l'image n'existe pas. va la créer
             bitmap = BitmapFactory.decodeFile(path);
         }
 
@@ -290,7 +354,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //créateur: Maxime Paulin
-    public void initialisationPickers(){
+    public void initPickers() {
         dateText.setOnClickListener(v -> {
             final Calendar cldr = Calendar.getInstance();
             int day = cldr.get(Calendar.DAY_OF_MONTH);
@@ -298,7 +362,7 @@ public class MainActivity extends AppCompatActivity{
             int year = cldr.get(Calendar.YEAR);
             // date picker dialog
             datePickerDialog = new DatePickerDialog(MainActivity.this,
-                    (view, year1, monthOfYear, dayOfMonth) -> dateText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1), year, month, day);
+                    (view, year1, monthOfYear, dayOfMonth) -> dateText.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year1), year, month, day);
             datePickerDialog.show();
         });
         //https://codedocu.com/Google/Android/Development/Android-Controls/Android-TimePickerDialog---Digital-Layout?2664
@@ -309,10 +373,9 @@ public class MainActivity extends AppCompatActivity{
             // timme picker dialog
             timePickerDialog = new TimePickerDialog(MainActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                     (view1, heure1, minute1) -> {
-                        if(Locale.getDefault().getLanguage().equals("en")){
+                        if (Locale.getDefault().getLanguage().equals("en")) {
                             timeText.setText(heure1 + " Hour(s)" + " and " + minute1 + " minute(s)");
-                        }
-                        else{
+                        } else {
                             timeText.setText(heure1 + " Heure(s)" + " et " + minute1 + " minute(s)");
                         }
                     }, heure, minute, true);
