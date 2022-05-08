@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-//Todo: Bug potentiel... Je penses qu'un Spinner marche pas très bien. Parce que si la liste
-// est très très longue ont peux potentiellement manquer d'expace dans l'écran surtout si le téléphone est petit
 public class voirEntrainement extends AppCompatActivity {
 
     public Button btnRetour;
@@ -54,7 +52,7 @@ public class voirEntrainement extends AppCompatActivity {
     int semaineChoisis = 0;
 
     // you need to have a list of data that you want the spinner to display
-    List<String> choixSemaine =  new ArrayList<String>();
+    List<String> choixSemaine = new ArrayList<String>();
     ArrayAdapter<String> adapter; //s'assurer que l'adapter n'est jamais détruit.
     Spinner sItems;
 
@@ -71,6 +69,7 @@ public class voirEntrainement extends AppCompatActivity {
             public void onCreate(SQLiteDatabase db) {
                 db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
             }
+
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             }
@@ -84,17 +83,16 @@ public class voirEntrainement extends AppCompatActivity {
             nombreSemaine = c.getCount();
 
             //si ya des lignes
-            if (nombreSemaine > 0)
-            {
+            if (nombreSemaine > 0) {
                 for (int i = 1; i < nombreSemaine; i++) {
                     choixSemaine.add(String.valueOf(i));
                 }
-            }else{
+            } else {
                 Toast.makeText(this, "Au minimum un rapport est nécessaire pour faire afficher les rapports antérieurs", Toast.LENGTH_SHORT).show();
                 btnAfficher.setEnabled(false);
             }
 
-        }catch (SQLiteException databaseError){
+        } catch (SQLiteException databaseError) {
             Toast.makeText(this, "Fait un export avant de voir les entrainements", Toast.LENGTH_SHORT).show();
             btnAfficher.setEnabled(false);
         }
@@ -109,7 +107,7 @@ public class voirEntrainement extends AppCompatActivity {
 
     }
 
-    public void initMainLayout(){
+    public void initMainLayout() {
 
         //bouton pour retourner à l'activité principal
         btnRetour = findViewById(R.id.btnRetour);
@@ -158,7 +156,7 @@ public class voirEntrainement extends AppCompatActivity {
 
     }
 
-    public static float convertDpToPixel(float dp, Context context){
+    public static float convertDpToPixel(float dp, Context context) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
