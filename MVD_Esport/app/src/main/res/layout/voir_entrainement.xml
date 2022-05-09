@@ -33,7 +33,7 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="405dp"
+        android:layout_width="0dp"
         android:layout_height="405dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="12dp"
@@ -56,16 +56,15 @@
 
             <LinearLayout
                 android:id="@+id/tableLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="1dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/linearLayoutActivitéPhysique"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp">
+                    android:layout_marginBottom="30dp" android:layout_width="match_parent">
 
                     <TextView
                         android:id="@+id/textActivitéPhysique"
@@ -90,7 +89,7 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayoutDate"
-                    android:layout_width="392dp"
+                    android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:layout_marginBottom="30dp">
 
@@ -172,7 +171,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearLayoutPhoto"
+                    android:id="@+id/linearLayoutChoixIntensity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="15dp">
@@ -292,10 +291,11 @@
 
     <Button
         android:id="@+id/btnRetour"
-        android:layout_width="188dp"
+        android:layout_width="150dp"
         android:layout_height="37dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="23dp"
+        android:layout_marginEnd="60dp"
         android:text="Retour"
         app:layout_constraintEnd_toStartOf="@+id/btnAfficher"
         app:layout_constraintStart_toStartOf="parent"
@@ -303,10 +303,11 @@
 
     <Button
         android:id="@+id/btnAfficher"
-        android:layout_width="196dp"
+        android:layout_width="150dp"
         android:layout_height="37dp"
-        android:layout_marginStart="23dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="32dp"
+        android:enabled="false"
         android:text="Afficher"
         app:layout_constraintStart_toEndOf="@+id/btnRetour"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />

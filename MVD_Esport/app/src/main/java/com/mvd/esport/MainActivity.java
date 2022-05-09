@@ -119,6 +119,22 @@ public class MainActivity extends AppCompatActivity {
         initModulePhoto();
         //initialise le module à Victor
         initModulePDF_BD();
+
+        //Initialisation de helper pour créer la BD, tables ...
+        helper = new SQLiteOpenHelper(MainActivity.this, "DataSemaine.db", null, 3) {
+            @Override
+            public void onCreate(SQLiteDatabase db) {
+                //création d'une table
+                db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
+            }
+
+            @Override
+            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                Log.d(TAG, "onUpgrade(): Mise à jour de la BD de la version " + oldVersion + " à la version " + newVersion);
+                db.execSQL(" DROP TABLE Esport");
+                onCreate(db);
+            }
+        };
     }
 
     //Maxime
@@ -271,22 +287,6 @@ public class MainActivity extends AppCompatActivity {
     //Créateur: Victor Bélanger
     public void initModulePDF_BD() {
 
-        //Initialisation de helper pour créer la BD, tables ...
-        helper = new SQLiteOpenHelper(MainActivity.this, "DataSemaine.db", null, 1) {
-            @Override
-            public void onCreate(SQLiteDatabase db) {
-                //création d'une table
-                db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
-            }
-
-            @Override
-            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-                db.execSQL(" DROP TABLE Esport");
-                onCreate(db);
-                Log.d(TAG, "onUpgrade(): Mise à jour de la BD de la version " + oldVersion + " à la version " + newVersion);
-            }
-        };
-
         pdfFunctions = new pdfFunctions(this);
 
         //Code lié au button PDF
@@ -367,7 +367,6 @@ public class MainActivity extends AppCompatActivity {
         });
         //https://codedocu.com/Google/Android/Development/Android-Controls/Android-TimePickerDialog---Digital-Layout?2664
         timeText.setOnClickListener(view -> { //TODO : Faire des ressources String pour éviter le... euh. locale thing...
-            final Calendar tempsExercice = Calendar.getInstance();
             int heure = 0;
             int minute = 0;
             // timme picker dialog
