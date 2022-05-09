@@ -72,6 +72,9 @@ public class voirEntrainement extends AppCompatActivity {
 
             @Override
             public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                Log.d(TAG, "onUpgrade(): Mise à jour de la BD de la version " + oldVersion + " à la version " + newVersion);
+                db.execSQL(" DROP TABLE Esport");
+                onCreate(db);
             }
         };
 
