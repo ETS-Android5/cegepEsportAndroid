@@ -9,5 +9,6 @@ data class donneesUtilisateur (
     val date: String,
     val objectifPersonel: String,
     val dureeMinute: String,
-    val intensite: String
+    val intensite: String,
+    val notePerso: String
 )

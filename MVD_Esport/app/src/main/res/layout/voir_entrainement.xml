@@ -14,17 +14,17 @@
         android:layout_height="27dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toEndOf="@+id/textSemaineAfficher"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textSemaineAfficher"
         android:layout_width="186dp"
         android:layout_height="25dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="12dp"
-        android:text="Semaine à afficher :"
+        android:text="@string/semaineAfficher"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -33,7 +33,7 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="405dp"
+        android:layout_width="0dp"
         android:layout_height="405dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="12dp"
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNomEquipe2"
+        app:layout_constraintTop_toBottomOf="@+id/voirEntrainementEquipe"
         tools:ignore="SpeakableTextPresentCheck">
 
         <HorizontalScrollView
@@ -56,16 +56,15 @@
 
             <LinearLayout
                 android:id="@+id/tableLayout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="1dp"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/linearLayoutActivitéPhysique"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="30dp">
+                    android:layout_marginBottom="30dp" android:layout_width="match_parent">
 
                     <TextView
                         android:id="@+id/textActivitéPhysique"
@@ -76,7 +75,7 @@
                         android:text="@string/labelActivité" />
 
                     <EditText
-                        android:id="@+id/editTextActivitéPhysique2"
+                        android:id="@+id/voirEntrainementActivite"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -90,7 +89,7 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayoutDate"
-                    android:layout_width="392dp"
+                    android:layout_width="match_parent"
                     android:layout_height="63dp"
                     android:layout_marginBottom="30dp">
 
@@ -104,7 +103,7 @@
                         android:text="Date : " />
 
                     <EditText
-                        android:id="@+id/editTextDate2"
+                        android:id="@+id/voirEntrainementDate"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -131,7 +130,7 @@
                         android:text="Objectif Personnel :" />
 
                     <EditText
-                        android:id="@+id/editTextObjectifPersonnel2"
+                        android:id="@+id/voirEntrainementPersonnel"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -159,7 +158,7 @@
                         android:text="@string/labelDurée" />
 
                     <EditText
-                        android:id="@+id/editTextDurée2"
+                        android:id="@+id/voirEntrainementTemps"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -172,7 +171,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearLayoutPhoto"
+                    android:id="@+id/linearLayoutChoixIntensity"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="15dp">
@@ -186,7 +185,7 @@
                         android:text="@string/labelIntensité" />
 
                     <EditText
-                        android:id="@+id/editTextChoixIntensité"
+                        android:id="@+id/voirEntrainementIntensite"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -199,10 +198,40 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imgPhoto"
+                <LinearLayout
+                    android:id="@+id/VoirEntrainementLinearLayoutNotePerso"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/voirEntrainementTextNotePerso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/textNotePerso" />
+
+                    <EditText
+                        android:id="@+id/voirEntrainementNotePerso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="30dp"
+                        android:background="@drawable/edittextborders"
+                        android:ems="10"
+                        android:enabled="false"
+                        android:focusableInTouchMode="false"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="3" />
+
+                    <ImageView
+                        android:id="@+id/imgPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
             </LinearLayout>
         </HorizontalScrollView>
@@ -221,7 +250,7 @@
         app:layout_constraintVertical_bias="0.119" />
 
     <EditText
-        android:id="@+id/editTextNomEquipe2"
+        android:id="@+id/voirEntrainementEquipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -247,7 +276,7 @@
         app:layout_constraintVertical_bias="0.21" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/voirEntrainementNom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -258,17 +287,29 @@
         android:inputType="textPersonName"
         android:minHeight="48dp"
         app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/textSemaineAfficher" />
 
     <Button
         android:id="@+id/btnRetour"
-        android:layout_width="300dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="31dp"
+        android:layout_width="150dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="60dp"
         android:text="Retour"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toStartOf="@+id/btnAfficher"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <Button
+        android:id="@+id/btnAfficher"
+        android:layout_width="150dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="32dp"
+        android:enabled="false"
+        android:text="Afficher"
+        app:layout_constraintStart_toEndOf="@+id/btnRetour"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
