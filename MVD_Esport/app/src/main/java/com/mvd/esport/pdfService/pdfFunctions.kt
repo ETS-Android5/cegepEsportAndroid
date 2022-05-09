@@ -46,6 +46,9 @@ class PdfFunctions(context: MainActivity) { //param constructeur sont ici!
     //https://github.com/annasta13/Pdf-Export
     /**
      * openFile
+     *
+     * Procédure qui permet d'ouvrir un document PDF.
+     * @param file Objet File pour gérer le document PDF.
      */
     fun openFile(file: File) {
         val path = FileHandler().getPathFromUri(paramThis, file.toUri())
@@ -65,6 +68,9 @@ class PdfFunctions(context: MainActivity) { //param constructeur sont ici!
 
     /**
      * toastErrorMessage
+     *
+     * Procédure qui envoit un toast s'il y a erreur.
+     * @param s objet String pour le message d'erreur.
      */
     fun toastErrorMessage(s: String) {
         Toast.makeText(paramThis, s, Toast.LENGTH_SHORT).show()
