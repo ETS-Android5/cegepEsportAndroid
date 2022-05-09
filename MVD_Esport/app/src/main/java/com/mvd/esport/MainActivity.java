@@ -111,6 +111,22 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
 
+        //Initialisation de helper pour créer la BD, tables ...
+        helper = new SQLiteOpenHelper(MainActivity.this, "DataSemaine.db", null, 1) {
+            @Override
+            public void onCreate(SQLiteDatabase db) {
+                //création d'une table
+                db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
+            }
+
+            @Override
+            public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+                db.execSQL(" DROP TABLE Esport");
+                onCreate(db);
+                Log.d(TAG, "onUpgrade(): Mise à jour de la BD de la version " + oldVersion + " à la version " + newVersion);
+            }
+        };
+
         setContentView(R.layout.activity_main);
         //initialise les variables pour le formulaire
         initMainLayout();
