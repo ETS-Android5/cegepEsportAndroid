@@ -64,7 +64,7 @@ public class voirEntrainement extends AppCompatActivity {
 
 
         //initialise la variable helper en cherchant la base de donnée
-        helper = new SQLiteOpenHelper(this, "DataSemaine.db", null, 1) {
+        helper = new SQLiteOpenHelper(this, "DataSemaine.db", null, 3) {
             @Override
             public void onCreate(SQLiteDatabase db) {
                 db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
@@ -122,22 +122,26 @@ public class voirEntrainement extends AppCompatActivity {
         btnAfficher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Lit une  entré dans la BD
-                semaineChoisis = Integer.parseInt(sItems.getSelectedItem().toString());
-                //https://stackoverflow.com/questions/50441874/rawquery-formatting
-                Cursor c2 = database.rawQuery("SELECT * FROM Esport WHERE _Id = " + semaineChoisis, null);
-                c2.moveToNext();
-                Log.d(TAG, String.valueOf(semaineChoisis));
+                try {
+                    //Lit une  entré dans la BD
+                    semaineChoisis = Integer.parseInt(sItems.getSelectedItem().toString());
+                    //https://stackoverflow.com/questions/50441874/rawquery-formatting
+                    Cursor c2 = database.rawQuery("SELECT * FROM Esport WHERE _Id = " + semaineChoisis, null);
+                    c2.moveToNext();
+                    Log.d(TAG, String.valueOf(semaineChoisis));
 
-                //Affiche les données à l'écran
-                inputNom.setText(c2.getString(1));
-                inputEquipe.setText(c2.getString(2));
-                inputActivite.setText(c2.getString(3));
-                dateText.setText(c2.getString(4));
-                timeText.setText(c2.getString(5));
-                inputpersonelle.setText(c2.getString(6));
-                choixintense.setText(c2.getString(7));
-                notePerso.setText(c2.getString(8));
+                    //Affiche les données à l'écran
+                    inputNom.setText(c2.getString(1));
+                    inputEquipe.setText(c2.getString(2));
+                    inputActivite.setText(c2.getString(3));
+                    dateText.setText(c2.getString(4));
+                    timeText.setText(c2.getString(5));
+                    inputpersonelle.setText(c2.getString(6));
+                    choixintense.setText(c2.getString(7));
+                    notePerso.setText(c2.getString(8));
+                } catch (NullPointerException e) {
+                    Toast.makeText(getApplicationContext(), "Aucune semaine selectionée.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
