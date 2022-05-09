@@ -41,9 +41,9 @@ import android.widget.Spinner;
 
 import android.widget.Toast;
 
-import com.mvd.esport.data.donneesUtilisateur;
+import com.mvd.esport.data.DonneesUtilisateur;
 
-import com.mvd.esport.pdfService.pdfFunctions;
+import com.mvd.esport.pdfService.PdfFunctions;
 
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    //victor - pour gérer avec la BD plus facilement.
+    //victor - pour gérer la BD plus facilement.
     int bd_id = 0;
     int bd_name = 1;
     int bd_team = 2;
@@ -99,10 +99,10 @@ public class MainActivity extends AppCompatActivity {
     EditText inputpersonelle;
     Spinner choixintense;
     EditText notePerso;
-    ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
+    ArrayList<DonneesUtilisateur> dataUser = new ArrayList<>();
     Button pdfButton;
     //pdfFunctions : Class que j'ai créer pour travailler avec les fonctions kotlins pour créer un PDF. parce que utiliser les services de pdfServices directement était awkward lol.
-    pdfFunctions pdfFunctions;
+    PdfFunctions pdfFunctions;
     String imgPath = " ";
     Button pdfButtonAll;
 
@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
     //Créateur: Victor Bélanger
     public void initModulePDF_BD() {
 
-        pdfFunctions = new pdfFunctions(this);
+        pdfFunctions = new PdfFunctions(this);
 
         //Code lié au button PDF
         //Ayyy j'aime don ben ça de faire les event avec une fonction lambda <3
@@ -312,10 +312,10 @@ public class MainActivity extends AppCompatActivity {
         pdfButton.setOnClickListener(view -> {
             //maxime 05-03-2022 18:27: J'ai ajouter des Toasts pour avertir les utilisateurs
             if (check_Write_perm()) {
-                //va chercher les droits d'écriture
                 database = helper.getWritableDatabase();
                 //entre dans la BD les champs du layout Principal
-                database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity, Note) VALUES ('" + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString() + "', '"
+                database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity, Note) VALUES ('"
+                        + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString() + "', '"
                         + inputActivite.getText().toString() + "', '" + dateText.getText().toString() + "', '" + timeText.getText().toString() + "', '"
                         + inputpersonelle.getText().toString() + "', '" + choixintense.getSelectedItem().toString() + "', '" + notePerso.getText().toString() + "')");
                 //fin du module database
@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
 
                             //insert les données dans dataUser pour PDF.
                             c.moveToNext();
-                            donneesUtilisateur temp = new donneesUtilisateur(
+                            DonneesUtilisateur temp = new DonneesUtilisateur(
                                     inputNom.getText().toString(), inputEquipe.getText().toString(),
                                     c.getString(bd_activity), c.getString(bd_date), c.getString(bd_objectif),
                                     c.getString(bd_time), c.getString(bd_intensity), c.getString(bd_note)

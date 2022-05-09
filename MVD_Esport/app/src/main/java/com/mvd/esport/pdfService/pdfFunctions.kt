@@ -7,10 +7,10 @@ import android.os.StrictMode
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.mvd.esport.MainActivity
-import com.mvd.esport.data.donneesUtilisateur
+import com.mvd.esport.data.DonneesUtilisateur
 import java.io.File
 
-class pdfFunctions(context: MainActivity) { //param constructeur sont ici!
+class PdfFunctions(context: MainActivity) { //param constructeur sont ici!
 
     /**
      * paramThis : Le context de l'application.
@@ -24,9 +24,9 @@ class pdfFunctions(context: MainActivity) { //param constructeur sont ici!
      * @param userData les données entrées dans l'utilisateur
      * @param image le chemin de l'image
      */
-    fun createPdf(userData: List<donneesUtilisateur>, image: String) { //fonction qui va creer le pdf
+    fun createPdf(userData: List<DonneesUtilisateur>, image: String) { //fonction qui va creer le pdf
         val onFinish: (File) -> Unit = { openFile(it) } // <-- la seul raison pourquoi je travaille encore en Kotlin :P
-        val pdfService = pdfService()
+        val pdfService = PdfService()
         pdfService.createUserTable(data = userData, onFinish = onFinish, imageUser = image)
     }
 
@@ -37,9 +37,9 @@ class pdfFunctions(context: MainActivity) { //param constructeur sont ici!
      * Procédure qui va chercher la fonction createPourMois de pdfService pour créer un document PDF.
      * @param userData les données entrées dans l'utilisateur
      */
-    fun createPdfMois(userData: List<donneesUtilisateur>) { //fonction qui va creer le pdf
+    fun createPdfMois(userData: List<DonneesUtilisateur>) { //fonction qui va creer le pdf
         val onFinish: (File) -> Unit = { openFile(it) } // <-- la seul raison pourquoi je travaille encore en Kotlin :P
-        val pdfService = pdfService()
+        val pdfService = PdfService()
         pdfService.createPourMois(data = userData, onFinish = onFinish)
     }
 

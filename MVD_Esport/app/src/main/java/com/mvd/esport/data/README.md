@@ -3,13 +3,14 @@ La class kotlin ici permet de créer un objet qui regroupe toutes les infos qu'o
 
 ### Aperçu du contenu du fichier
 ```Kotlin
-data class donneesUtilisateur (
+data class DonneesUtilisateur (
     val nom: String,
     val equipe: String,
     val activitePratique: String,
     val date: String,
     val objectifPersonel: String,
     val dureeMinute: String,
-    val intensite: String
+    val intensite: String,
+    val notePerso: String
 )
 ```

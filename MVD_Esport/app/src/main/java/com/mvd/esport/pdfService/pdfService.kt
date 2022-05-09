@@ -8,7 +8,7 @@ import com.itextpdf.text.*
 import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfPTable
 import com.itextpdf.text.pdf.PdfWriter
-import com.mvd.esport.data.donneesUtilisateur
+import com.mvd.esport.data.DonneesUtilisateur
 import java.io.File
 import java.io.FileOutputStream
 
@@ -22,7 +22,7 @@ import java.time.format.DateTimeFormatter
  *
  */
 
-class pdfService {
+class PdfService {
     val TITLE_FONT = Font(Font.FontFamily.TIMES_ROMAN, 16f, Font.BOLD) //TODO: Modifier les polices au besoins
     val BODY_FONT = Font(Font.FontFamily.TIMES_ROMAN, 12f, Font.NORMAL)
     private lateinit var pdf: PdfWriter //objet PDF
@@ -124,7 +124,7 @@ class pdfService {
     //temps de créer une fonction pour générer un PDF!
     //cette fonction va créer un PDF pour la journée même.
     fun createUserTable(
-        data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
+        data: List<DonneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
         imageUser: String, //path de l'image
         onFinish: (file: File) -> Unit,
     ) {
@@ -195,7 +195,7 @@ class pdfService {
     //victor - modif derniere minute pour Yves
     //fonction pour créer un PDF pour le mois! (sans images malheuresement)
     fun createPourMois(
-        data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
+        data: List<DonneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
         onFinish: (file: File) -> Unit,
     ){
         //va pogner la date d'aujoud'hui https://www.programiz.com/kotlin-programming/examples/current-date-time
