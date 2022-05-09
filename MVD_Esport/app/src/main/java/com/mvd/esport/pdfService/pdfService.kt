@@ -190,13 +190,14 @@ class pdfService {
         }
     }
 
+    //victor - modif derniere minute pour Yves
     //fonction pour créer un PDF pour le mois! (sans images malheuresement)
     fun createPourMois(
         data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
         onFinish: (file: File) -> Unit,
     ){
         //Define the document
-        val file = createFile(data[0].nom + " - " + data[0].activitePratique + " (" + data[0].date + ").pdf")
+        val file = createFile(data[0].nom  + " (" + data[0].date + ").pdf")
         val document = createDocument()
         //Setup PDF Writer
         setupPdfWriter(document, file)
@@ -205,7 +206,7 @@ class pdfService {
         val nomEquipe = data[0].equipe
 
         //Titre et Équipe. j'imagine 1 tableau avec le nom et l'équipe.
-        val columnWidth = floatArrayOf(1f, 1f)
+        var columnWidth = floatArrayOf(1f, 1f)
         val table = createTable(columnWidth.size, columnWidth)
         listOf<String>("Nom", "Équipe", nomUser, nomEquipe).forEach() //Fonction anonyme pour la création du tableau qui affiche le nom et equipe de la personne.
         {
@@ -213,6 +214,33 @@ class pdfService {
         }
         //ajout du tableau au document PDF
         document.add(table)
+        addLineSpace(document, 2)
+
+        //création du 2eme tableau.
+        columnWidth = floatArrayOf(1f, 1f, 1f, 1f, 1f, 1f)
+        val table2 = createTable(columnWidth.size, columnWidth) //TODO : Trouver un moyen de réutiliser l'objet "table" en Kotlin
+        //créer l'autre tableau. commence avec les headers.
+        listOf<String>(
+            "Date : ",
+            "Activité pratiqué : ",
+            "Objectif Personel : ",
+            "Durée : ",
+            "Intensité : ",
+            "Note : ",
+        ).forEach() {
+            table2.addCell(createCell(it))
+        }
+        //maintenant ajoute les données
+        data.forEach{
+            table2.addCell(createCell(it.date))
+            table2.addCell(createCell(it.activitePratique))
+            table2.addCell(createCell(it.objectifPersonel))
+            table2.addCell(createCell(it.dureeMinute))
+            table2.addCell(createCell(it.intensite))
+            table2.addCell(createCell(it.notePerso))
+        }
+        //ajoute le tout dans le document PDF
+        document.add(table2)
         addLineSpace(document, 2)
 
 

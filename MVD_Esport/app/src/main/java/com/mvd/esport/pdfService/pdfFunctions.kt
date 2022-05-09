@@ -30,6 +30,19 @@ class pdfFunctions(context: MainActivity) { //param constructeur sont ici!
         pdfService.createUserTable(data = userData, onFinish = onFinish, imageUser = image)
     }
 
+    //victor - modif derniere minute pour Yves
+    /**
+     * createPdfMois
+     *
+     * Procédure qui va chercher la fonction createPourMois de pdfService pour créer un document PDF.
+     * @param userData les données entrées dans l'utilisateur
+     */
+    fun createPdfMois(userData: List<donneesUtilisateur>) { //fonction qui va creer le pdf
+        val onFinish: (File) -> Unit = { openFile(it) } // <-- la seul raison pourquoi je travaille encore en Kotlin :P
+        val pdfService = pdfService()
+        pdfService.createPourMois(data = userData, onFinish = onFinish)
+    }
+
     //https://github.com/annasta13/Pdf-Export
     /**
      * openFile

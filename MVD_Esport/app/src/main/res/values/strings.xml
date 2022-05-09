@@ -12,6 +12,12 @@
     <string name="semaineAfficher">Semaine à afficher :</string>
     <string name="textNotePerso">Note personnelle :</string>
     <string name="databaseError">Fait un export avant de voir les entrainements</string>
+    <string name="choix_photo">choix photo</string>
+    <string name="sauvegarder">Sauvegarder</string>
+    <string name="voir_les_entrainements">voir les entrainements</string>
+    <string name="exporter_tous_les_entrainements_enregistr_es">Exporter tous les entrainements enregistrées</string>
+    <string name="afficher">Afficher</string>
+    <string name="retour">Retour</string>
     <string-array name="choixIntensité">
         <item>Faible</item>
         <item>Moyen</item>

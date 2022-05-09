@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -62,6 +63,18 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    //pour gérer avec la BD plus facilement.
+    int bd_id = 0;
+    int bd_name = 1;
+    int bd_team = 2;
+    int bd_activity = 3;
+    int bd_date = 4;
+    int bd_objectif = 5;
+    int bd_time = 6;
+    int bd_intensity = 7;
+    int bd_note = 8;
+
+
     // Création d'un object helper nous servant de donné un nom à notre BD et pouvoir la créer
     SQLiteOpenHelper helper;
     SQLiteDatabase database;
@@ -91,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
     //pdfFunctions : Class que j'ai créer pour travailler avec les fonctions kotlins pour créer un PDF. parce que utiliser les services de pdfServices directement était awkward lol.
     pdfFunctions pdfFunctions;
     String imgPath = " ";
+    Button pdfButtonAll;
+
 
     ////Maxime - voirEntrainement
     public Button btnVoirEntrainement;
@@ -295,22 +310,60 @@ public class MainActivity extends AppCompatActivity {
         pdfButton = findViewById(R.id.sauvegardeExercice);
         //Maxime 05-03-2022 18:15 : J'ai ajouter les lignes à david au bouton export pdf pour écrire dans la BD les champs du Layout
         pdfButton.setOnClickListener(view -> {
-            //va chercher les droits d'écriture
-            database = helper.getWritableDatabase();
-            //entre dans la BD les champs du layout Principal
-            database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity, Note) VALUES ('" + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString() + "', '"
-                    + inputActivite.getText().toString() + "', '" + dateText.getText().toString() + "', '" + timeText.getText().toString() + "', '"
-                    + inputpersonelle.getText().toString() + "', '" + choixintense.getSelectedItem().toString() + "', '" + notePerso.getText().toString() + "')");
-            //fin du module database
-            dataUser.clear();
-
-            dataUser.add(new donneesUtilisateur(inputNom.getText().toString(), inputEquipe.getText().toString(), inputActivite.getText().toString(),
-                    dateText.getText().toString(), inputpersonelle.getText().toString(), timeText.getText().toString(), choixintense.getSelectedItem().toString(), notePerso.getText().toString()));
-
             //maxime 05-03-2022 18:27: J'ai ajouter des Toasts pour avertir les utilisateurs
             if (check_Write_perm()) {
+                //va chercher les droits d'écriture
+                database = helper.getWritableDatabase();
+                //entre dans la BD les champs du layout Principal
+                database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity, Note) VALUES ('" + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString() + "', '"
+                        + inputActivite.getText().toString() + "', '" + dateText.getText().toString() + "', '" + timeText.getText().toString() + "', '"
+                        + inputpersonelle.getText().toString() + "', '" + choixintense.getSelectedItem().toString() + "', '" + notePerso.getText().toString() + "')");
+                //fin du module database
+                dataUser.clear();
+
+                //le code en commentaire est pour créer un pdf tout seul avec un seul entrainement.
+                /*
+                dataUser.add(new donneesUtilisateur(inputNom.getText().toString(), inputEquipe.getText().toString(), inputActivite.getText().toString(),
+                        dateText.getText().toString(), inputpersonelle.getText().toString(), timeText.getText().toString(), choixintense.getSelectedItem().toString(), notePerso.getText().toString()));
+
                 pdfFunctions.createPdf(dataUser, imgPath);
                 Toast.makeText(this, "PDF créer", Toast.LENGTH_SHORT).show();
+                */
+            } else {
+                Toast.makeText(this, "Veuillez appliquer les accèes", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //victor - modif derniere minute pour Yves
+        pdfButtonAll = findViewById(R.id.exportAll);
+        pdfButtonAll.setOnClickListener(view -> {
+            if (check_Write_perm()) { //si il a les permissions
+                try {
+                    database = helper.getWritableDatabase();
+                    Cursor c = database.rawQuery("SELECT * FROM Esport", null); //va chercher les donnees
+                    if (c.getCount() > 0) { //s'il y a de quoi dans la base de données
+                        //clear le tableau au cas ou.
+                        dataUser.clear();
+                        for (int i = 1; i < c.getCount(); i++) { //l'Id commence a 1
+
+                            //insert les données dans dataUser pour PDF.
+                            c.moveToNext();
+                            donneesUtilisateur temp = new donneesUtilisateur(
+                                    inputNom.getText().toString(), inputEquipe.getText().toString(),
+                                    c.getString(bd_activity), c.getString(bd_date), c.getString(bd_objectif),
+                                    c.getString(bd_time), c.getString(bd_intensity), c.getString(bd_note)
+                            );
+                            dataUser.add(temp);
+                        }
+                        //maintenant va créer le PDF
+                        pdfFunctions.createPdfMois(dataUser);
+
+                    } else {
+                        Toast.makeText(this, "Vous avez aucun entrainement enregistré sur votre téléphone", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (SQLiteException databaseError) {
+                    Toast.makeText(this, "Il y a une erreur avec la base de données!", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(this, "Veuillez appliquer les accès", Toast.LENGTH_SHORT).show();
             }
