@@ -86,6 +86,7 @@ public class voirEntrainement extends AppCompatActivity {
             if (nombreSemaine > 0) {
                 for (int i = 1; i < nombreSemaine; i++) {
                     choixSemaine.add(String.valueOf(i));
+                    btnAfficher.setEnabled(true);
                 }
             } else {
                 Toast.makeText(this, "Au minimum un rapport est nécessaire pour faire afficher les rapports antérieurs", Toast.LENGTH_SHORT).show();
