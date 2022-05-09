@@ -367,7 +367,6 @@ public class MainActivity extends AppCompatActivity {
         });
         //https://codedocu.com/Google/Android/Development/Android-Controls/Android-TimePickerDialog---Digital-Layout?2664
         timeText.setOnClickListener(view -> { //TODO : Faire des ressources String pour éviter le... euh. locale thing...
-            final Calendar tempsExercice = Calendar.getInstance();
             int heure = 0;
             int minute = 0;
             // timme picker dialog
