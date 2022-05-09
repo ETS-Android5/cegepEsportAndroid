@@ -18,4 +18,10 @@
     <string name="textNotePerso">Personal note :</string>
     <string name="semaineAfficher">Week to display :</string>
     <string name="databaseError">Do an export before use</string>
+    <string name="choix_photo">Choose a photo...</string>
+    <string name="sauvegarder">Save</string>
+    <string name="voir_les_entrainements">View your training sessions</string>
+    <string name="exporter_tous_les_entrainements_enregistr_es">Export all your saved training sessions</string>
+    <string name="afficher">View</string>
+    <string name="retour">Back</string>
 </resources>
