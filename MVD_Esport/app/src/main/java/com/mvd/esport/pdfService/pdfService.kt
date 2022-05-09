@@ -27,9 +27,8 @@ class pdfService {
 
     private val TAG = "pdfService"
 
-    private fun createFile(): File {
+    private fun createFile(title: String): File {
         //Prepare file
-        val title = "Pdf to export.pdf" //TODO: Renommer le fichier pour quelque chose de plus significatif. Une date avec le nom de l'app, peut-être?
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) //TODO: Le fichier Downloads est intéressant. Fait-on notre propre dossier au lieu?
         val file = File(path, title)
         if (!file.exists()) file.createNewFile()
@@ -82,16 +81,16 @@ class pdfService {
         }
     }
 
-    private fun createParagraph(content: String): Paragraph{ //va créer un paragraphe //TODO: Check format du paragraph.
+    private fun createParagraph(content: String): Paragraph { //va créer un paragraphe //TODO: Check format du paragraph.
         val paragraph = Paragraph(content, BODY_FONT)
-        paragraph.firstLineIndent = 25f
+
         paragraph.alignment = Element.ALIGN_JUSTIFIED
         return paragraph
     }
 
     //TODO : Fonction qui scale l'image based on la taille de la feuille au besoin.
     //https://stackoverflow.com/questions/11120775/itext-image-resize
-    private fun resizePhoto(document: Document, image : Image): Image {
+    private fun resizePhoto(document: Document, image: Image): Image {
         val documentWidth: Float =
             document.pageSize.width - document.leftMargin() - document.rightMargin()
         val documentHeight: Float =
@@ -105,7 +104,7 @@ class pdfService {
     }
 
     //TODO : Fonction qui rotate l'image selon l'EXIF. Un peu copier coller de la fonction rotateImage() dans MainActivity.
-    private fun rotateImage(path : String): Float {
+    private fun rotateImage(path: String): Float {
         val exif = ExifInterface(path) //va chercher metadonnee EXIF
         var rotate = 0F
         val orientation = exif.getAttributeInt(
@@ -121,14 +120,14 @@ class pdfService {
     }
 
     //temps de créer une fonction pour générer un PDF!
+    //cette fonction va créer un PDF pour la journée même.
     fun createUserTable(
         data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
-        imageUser : String, //path de l'image
-        //TODO: paragraphList: String, //Note personelle. Dans une valeur séparé ou dans la liste data?
+        imageUser: String, //path de l'image
         onFinish: (file: File) -> Unit,
-    ){
+    ) {
         //Define the document
-        val file = createFile()
+        val file = createFile(data[0].nom + " - " + data[0].activitePratique + " (" + data[0].date + ").pdf")
         val document = createDocument()
         //Setup PDF Writer
         setupPdfWriter(document, file)
@@ -139,19 +138,19 @@ class pdfService {
         //Titre et Équipe. j'imagine 1 tableau avec le nom et l'équipe.
         val columnWidth = floatArrayOf(1f, 1f)
         val table = createTable(columnWidth.size, columnWidth)
-        listOf<String>("Nom","Équipe", nomUser, nomEquipe).forEach() //Fonction anonyme pour la création du tableau qui affiche le nom et equipe de la personne.
+        listOf<String>("Nom", "Équipe", nomUser, nomEquipe).forEach() //Fonction anonyme pour la création du tableau qui affiche le nom et equipe de la personne.
         {
             table.addCell(createCell(it))
         }
         //ajout du tableau au document PDF
         document.add(table)
-        addLineSpace(document,2)
+        addLineSpace(document, 2)
 
 
         val table2 = createTable(columnWidth.size, columnWidth) //TODO : Trouver un moyen de réutiliser l'objet table en Kotlin
         //créer l'autre tableau.
         listOf<String>(
-            "Activité pratiqué : ",data[0].activitePratique,
+            "Activité pratiqué : ", data[0].activitePratique,
             "Date : ", data[0].date,
             "Objectif Personel : ", data[0].objectifPersonel,
             "Durée : ", data[0].dureeMinute,
@@ -160,20 +159,24 @@ class pdfService {
             table2.addCell(createCell(it))
         }
         document.add(table2)
-        addLineSpace(document,2)
+        addLineSpace(document, 2)
 
+        document.add(createParagraph("Note Personelle : "))
+        addLineSpace(document, 1)
+        document.add(createParagraph(data[0].notePerso))
+        addLineSpace(document, 2)
 
         //ajoute la photo au PDF
-        //TODO : Au besoin : Resize l'image pour qu'elle "fit" dans la page.
+        //TODO : Au besoin : Resize l'image pour qu'elle "fit" dans la page avec tableau.
         try {
-            if (imageUser.isNotBlank()){ //si le string n'est pas vide
-                val image = resizePhoto(document,Image.getInstance(imageUser))
+            if (imageUser.isNotBlank()) { //si le string n'est pas vide
+                val image = resizePhoto(document, Image.getInstance(imageUser))
                 val rotate = rotateImage(imageUser)
                 image.setRotationDegrees(rotate)
                 document.add(image) //essaye d'ajouter l'image
             }
-        }catch (ex : java.io.FileNotFoundException){ //si l'utilisateur delete l'image apres l'avoir choisis, fait rien avec l'image.
-            Log.e(TAG,ex.toString())
+        } catch (ex: java.io.FileNotFoundException) { //si l'utilisateur delete l'image apres l'avoir choisis, fait rien avec l'image.
+            Log.e(TAG, ex.toString())
             //fait rien. faudrait avoir une image noir avec "IMAGE PERDU" écrit dessus pour ce cas.
         }
 
@@ -181,9 +184,47 @@ class pdfService {
         try {
             pdf.close()
         } catch (ex: Exception) {
-            Log.e(TAG,ex.toString())
+            Log.e(TAG, ex.toString())
         } finally {
             onFinish(file)
         }
     }
+
+    //fonction pour créer un PDF pour le mois! (sans images malheuresement)
+    fun createPourMois(
+        data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
+        onFinish: (file: File) -> Unit,
+    ){
+        //Define the document
+        val file = createFile(data[0].nom + " - " + data[0].activitePratique + " (" + data[0].date + ").pdf")
+        val document = createDocument()
+        //Setup PDF Writer
+        setupPdfWriter(document, file)
+        //Va chercher le nom et nom d'equipe de la premiere entree dans la liste.
+        val nomUser = data[0].nom
+        val nomEquipe = data[0].equipe
+
+        //Titre et Équipe. j'imagine 1 tableau avec le nom et l'équipe.
+        val columnWidth = floatArrayOf(1f, 1f)
+        val table = createTable(columnWidth.size, columnWidth)
+        listOf<String>("Nom", "Équipe", nomUser, nomEquipe).forEach() //Fonction anonyme pour la création du tableau qui affiche le nom et equipe de la personne.
+        {
+            table.addCell(createCell(it))
+        }
+        //ajout du tableau au document PDF
+        document.add(table)
+        addLineSpace(document, 2)
+
+
+        document.close()
+        try {
+            pdf.close()
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.toString())
+        } finally {
+            onFinish(file)
+        }
+    }
+
+
 }
