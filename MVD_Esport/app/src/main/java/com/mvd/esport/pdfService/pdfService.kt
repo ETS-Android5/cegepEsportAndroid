@@ -12,6 +12,8 @@ import com.mvd.esport.data.donneesUtilisateur
 import java.io.File
 import java.io.FileOutputStream
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * Created by Annas Surdyanto on 05/02/22.
@@ -196,8 +198,11 @@ class pdfService {
         data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
         onFinish: (file: File) -> Unit,
     ){
+        //va pogner la date d'aujoud'hui https://www.programiz.com/kotlin-programming/examples/current-date-time
+        var date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
         //Define the document
-        val file = createFile(data[0].nom  + " (" + data[0].date + ").pdf")
+        val file = createFile(data[0].nom  + " (" + date + ").pdf")
         val document = createDocument()
         //Setup PDF Writer
         setupPdfWriter(document, file)

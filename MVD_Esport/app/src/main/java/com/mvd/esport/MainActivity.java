@@ -63,7 +63,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    //pour gérer avec la BD plus facilement.
+    //victor - pour gérer avec la BD plus facilement.
     int bd_id = 0;
     int bd_name = 1;
     int bd_team = 2;
