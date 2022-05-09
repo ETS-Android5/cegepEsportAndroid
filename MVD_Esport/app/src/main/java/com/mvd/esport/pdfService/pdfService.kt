@@ -92,9 +92,9 @@ class pdfService {
     //https://stackoverflow.com/questions/11120775/itext-image-resize
     private fun resizePhoto(document: Document, image: Image): Image {
         val documentWidth: Float =
-            document.pageSize.width - document.leftMargin() - document.rightMargin()
+                document.pageSize.width - document.leftMargin() - document.rightMargin()
         val documentHeight: Float =
-            document.pageSize.height - document.topMargin() - document.bottomMargin()
+                document.pageSize.height - document.topMargin() - document.bottomMargin()
 
         if (image.height > documentHeight || image.width > documentWidth) {
             image.scaleToFit(documentWidth, documentHeight)
@@ -108,8 +108,8 @@ class pdfService {
         val exif = ExifInterface(path) //va chercher metadonnee EXIF
         var rotate = 0F
         val orientation = exif.getAttributeInt(
-            ExifInterface.TAG_ORIENTATION,
-            ExifInterface.ORIENTATION_NORMAL
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
         )
         when (orientation) {
             ExifInterface.ORIENTATION_ROTATE_270 -> rotate = 270F
@@ -120,11 +120,11 @@ class pdfService {
     }
 
     //temps de créer une fonction pour générer un PDF!
-    //cette fonction va créer un PDF pour la journée même.
     fun createUserTable(
-        data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
-        imageUser: String, //path de l'image
-        onFinish: (file: File) -> Unit,
+            data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
+            imageUser: String, //path de l'image
+            //TODO: paragraphList: String, //Note personelle. Dans une valeur séparé ou dans la liste data?
+            onFinish: (file: File) -> Unit,
     ) {
         //Define the document
         val file = createFile(data[0].nom + " - " + data[0].activitePratique + " (" + data[0].date + ").pdf")
@@ -150,11 +150,11 @@ class pdfService {
         val table2 = createTable(columnWidth.size, columnWidth) //TODO : Trouver un moyen de réutiliser l'objet table en Kotlin
         //créer l'autre tableau.
         listOf<String>(
-            "Activité pratiqué : ", data[0].activitePratique,
-            "Date : ", data[0].date,
-            "Objectif Personel : ", data[0].objectifPersonel,
-            "Durée : ", data[0].dureeMinute,
-            "Intensité : ", data[0].intensite
+                "Activité pratiqué : ", data[0].activitePratique,
+                "Date : ", data[0].date,
+                "Objectif Personel : ", data[0].objectifPersonel,
+                "Durée : ", data[0].dureeMinute,
+                "Intensité : ", data[0].intensite
         ).forEach() {
             table2.addCell(createCell(it))
         }
@@ -189,42 +189,4 @@ class pdfService {
             onFinish(file)
         }
     }
-
-    //fonction pour créer un PDF pour le mois! (sans images malheuresement)
-    fun createPourMois(
-        data: List<donneesUtilisateur>, //Je vais laisser ceci en list, dans le cas qu'on voudrait un tableau avec plusieurs entrées.
-        onFinish: (file: File) -> Unit,
-    ){
-        //Define the document
-        val file = createFile(data[0].nom + " - " + data[0].activitePratique + " (" + data[0].date + ").pdf")
-        val document = createDocument()
-        //Setup PDF Writer
-        setupPdfWriter(document, file)
-        //Va chercher le nom et nom d'equipe de la premiere entree dans la liste.
-        val nomUser = data[0].nom
-        val nomEquipe = data[0].equipe
-
-        //Titre et Équipe. j'imagine 1 tableau avec le nom et l'équipe.
-        val columnWidth = floatArrayOf(1f, 1f)
-        val table = createTable(columnWidth.size, columnWidth)
-        listOf<String>("Nom", "Équipe", nomUser, nomEquipe).forEach() //Fonction anonyme pour la création du tableau qui affiche le nom et equipe de la personne.
-        {
-            table.addCell(createCell(it))
-        }
-        //ajout du tableau au document PDF
-        document.add(table)
-        addLineSpace(document, 2)
-
-
-        document.close()
-        try {
-            pdf.close()
-        } catch (ex: Exception) {
-            Log.e(TAG, ex.toString())
-        } finally {
-            onFinish(file)
-        }
-    }
-
-
 }

@@ -25,7 +25,7 @@
         android:id="@+id/editTextNomEquipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="-22dp"
         android:ems="10"
         android:imeOptions="actionDone"
@@ -34,22 +34,11 @@
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
 
-    <Button
-        android:id="@+id/sauvegardeExercice"
-        android:layout_width="164dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="50dp"
-        android:text="Exportation"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnPhoto"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="250dp"
         android:text="@string/labelNom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.079"
@@ -62,6 +51,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="250dp"
         android:text="@string/labelÉquipe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.082"
@@ -72,8 +62,8 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="405dp"
-        android:layout_height="405dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginEnd="5dp"
         android:fillViewport="true"
@@ -85,17 +75,18 @@
 
         <HorizontalScrollView
             android:id="@+id/horizontalView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
             android:layout_marginTop="30dp"
+            android:paddingBottom="150dp"
             android:scrollbars="horizontal|vertical"
             tools:ignore="MissingConstraints">
 
             <LinearLayout
                 android:id="@+id/tableLayout"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
                 android:orientation="vertical">
 
@@ -107,7 +98,7 @@
 
                     <TextView
                         android:id="@+id/textActivitéPhysique"
-                        android:layout_width="wrap_content"
+                        android:layout_width="130dp"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"
                         android:paddingHorizontal="10px"
@@ -127,8 +118,8 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayoutDate"
-                    android:layout_width="392dp"
-                    android:layout_height="63dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp">
 
                     <TextView
@@ -138,11 +129,11 @@
                         android:layout_marginRight="30dp"
                         android:layout_marginBottom="30dp"
                         android:paddingHorizontal="10px"
-                        android:text="Date : " />
+                        android:text="@string/labelDate" />
 
                     <EditText
                         android:id="@+id/editTextDate"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:ems="10"
@@ -155,8 +146,8 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayoutObjectifPersonnel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp">
 
                     <TextView
@@ -165,7 +156,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="30dp"
                         android:paddingHorizontal="10px"
-                        android:text="Objectif Personnel :" />
+                        android:text="@string/labelObjectifPerso" />
 
                     <EditText
                         android:id="@+id/editTextObjectifPersonnel"
@@ -182,8 +173,8 @@
 
                 <LinearLayout
                     android:id="@+id/linearLayoutDurée"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp">
 
                     <TextView
@@ -208,9 +199,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/linearLayoutPhoto"
+                    android:id="@+id/linearLayoutChoixIntensity"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp">
 
                     <TextView
@@ -231,38 +222,81 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/imgPhoto"
+                <LinearLayout
+                    android:id="@+id/VoirEntrainementLinearLayoutNotePerso"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/voirEntrainementTextNotePerso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/textNotePerso" />
+
+                    <EditText
+                        android:id="@+id/voirEntrainementNotePerso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="30dp"
+                        android:background="@drawable/edittextborders"
+                        android:ems="10"
+                        android:gravity="start|top"
+                        android:inputType="textMultiLine"
+                        android:minLines="3" />
+
+                    <ImageView
+                        android:id="@+id/imgPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutChoixIntensity"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/btnPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:layout_marginRight="50dp"
+                        android:layout_marginBottom="30dp"
+                        android:text="choix photo" />
+
+                    <Button
+                        android:id="@+id/sauvegardeExercice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="38dp"
+                        android:text="Exportation" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/voirEntrainement2"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:text="voir entrainements" />
+                </LinearLayout>
 
             </LinearLayout>
         </HorizontalScrollView>
     </ScrollView>
-
-    <Button
-        android:id="@+id/btnPhoto"
-        android:layout_width="142dp"
-        android:layout_height="38dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="19dp"
-        android:layout_marginBottom="50dp"
-        android:text="choix photo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-        app:layout_constraintVertical_bias="0.509" />
-
-    <Button
-        android:id="@+id/voirEntrainement2"
-        android:layout_width="237dp"
-        android:layout_height="38dp"
-        android:layout_marginBottom="3dp"
-        android:text="voir entrainements"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPhoto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
