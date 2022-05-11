@@ -53,7 +53,7 @@ public class voirEntrainement extends AppCompatActivity {
 
 
         //initialise la variable helper en cherchant la base de donnée
-        helper = new SQLiteOpenHelper(this, "DataSemaine.db", null, 3) {
+        helper = new SQLiteOpenHelper(this, "DataSemaine.db", null, 4) {
             @Override
             public void onCreate(SQLiteDatabase db) {
                 db.execSQL("CREATE TABLE Esport (_Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, Name TEXT, Team TEXT, ActivityPerformed TEXT, Date DATE, ObjectifPersonnel TEXT, Time TIME, Intensity TEXT, Note TEXT)");
@@ -76,8 +76,8 @@ public class voirEntrainement extends AppCompatActivity {
 
             //si ya des lignes
             if (nombreSemaine > 0) {
-                for (int i = 1; i < nombreSemaine; i++) {
-                    choixSemaine.add(String.valueOf(i));
+                for (int i = 0; i < nombreSemaine; i++) {
+                    choixSemaine.add(String.valueOf(i+1));
                     btnAfficher.setEnabled(true);
                 }
             } else {
