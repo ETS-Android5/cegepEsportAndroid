@@ -2,7 +2,7 @@ package com.mvd.esport.data
 
 //Objet pour storer les donnees utilisateur
 //donneesUtilisateur listOf() = ArrayList<donneesUtilisateur> dataUser = new ArrayList<>();
-data class donneesUtilisateur (
+data class DonneesUtilisateur (
     val nom: String,
     val equipe: String,
     val activitePratique: String,

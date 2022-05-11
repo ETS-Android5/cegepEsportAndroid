@@ -296,7 +296,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="60dp"
-        android:text="Retour"
+        android:text="@string/retour"
         app:layout_constraintEnd_toStartOf="@+id/btnAfficher"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
@@ -308,7 +308,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="32dp"
         android:enabled="false"
-        android:text="Afficher"
+        android:text="@string/afficher"
         app:layout_constraintStart_toEndOf="@+id/btnRetour"
         app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
