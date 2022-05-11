@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         initModulePDF_BD();
 
         //Initialisation de helper pour créer la BD, tables ...
-        helper = new SQLiteOpenHelper(MainActivity.this, "DataSemaine.db", null, 3) {
+        helper = new SQLiteOpenHelper(MainActivity.this, "DataSemaine.db", null, 4) {
             @Override
             public void onCreate(SQLiteDatabase db) {
                 //création d'une table
@@ -314,12 +314,12 @@ public class MainActivity extends AppCompatActivity {
             if (check_Write_perm()) {
                 database = helper.getWritableDatabase();
                 //entre dans la BD les champs du layout Principal
+                //TODO : Cette commande ne traite pas la valeur des contenues. L'applicatin peut crasher s'il rencontre des characteres specials.
                 database.execSQL("INSERT INTO Esport (Name, Team, ActivityPerformed, Date, ObjectifPersonnel, Time, Intensity, Note) VALUES ('"
                         + inputNom.getText().toString() + "', '" + inputEquipe.getText().toString() + "', '"
                         + inputActivite.getText().toString() + "', '" + dateText.getText().toString() + "', '" + timeText.getText().toString() + "', '"
                         + inputpersonelle.getText().toString() + "', '" + choixintense.getSelectedItem().toString() + "', '" + notePerso.getText().toString() + "')");
                 //fin du module database
-                dataUser.clear();
 
                 //le code en commentaire est pour créer un pdf tout seul avec un seul entrainement.
                 /*
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
                     if (c.getCount() > 0) { //s'il y a de quoi dans la base de données
                         //clear le tableau au cas ou.
                         dataUser.clear();
-                        for (int i = 1; i < c.getCount(); i++) { //l'Id commence a 1
+                        for (int i = 0; i < c.getCount(); i++) { //l'Id commence a 1
 
                             //insert les données dans dataUser pour PDF.
                             c.moveToNext();
