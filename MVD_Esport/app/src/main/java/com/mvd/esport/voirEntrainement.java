@@ -52,6 +52,8 @@ public class voirEntrainement extends AppCompatActivity {
         initMainLayout();
 
 
+
+
         //initialise la variable helper en cherchant la base de donnée
         helper = new SQLiteOpenHelper(this, "DataSemaine.db", null, 3) {
             @Override

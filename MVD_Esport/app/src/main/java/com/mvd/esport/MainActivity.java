@@ -11,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -119,6 +120,15 @@ public class MainActivity extends AppCompatActivity {
         initModulePhoto();
         //initialise le module à Victor
         initModulePDF_BD();
+
+        //https://stackoverflow.com/questions/44170028/android-how-to-detect-if-night-mode-is-on-when-using-appcompatdelegate-mode-ni
+        int nightModeFlags = this.getApplicationContext().getResources().getConfiguration().uiMode &
+                Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                notePerso.setTextColor(Color.RED);
+                break;
+        }
 
         //Initialisation de helper pour créer la BD, tables ...
         helper = new SQLiteOpenHelper(MainActivity.this, "DataSemaine.db", null, 3) {
@@ -311,6 +321,46 @@ public class MainActivity extends AppCompatActivity {
             if (check_Write_perm()) {
                 pdfFunctions.createPdf(dataUser, imgPath);
                 Toast.makeText(this, "PDF créer", Toast.LENGTH_SHORT).show();
+<<<<<<< Updated upstream
+=======
+                */
+                Toast.makeText(this, "Données sont sauvegarder", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Veuillez appliquer les accèes", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        //victor - modif derniere minute pour Yves
+        pdfButtonAll = findViewById(R.id.exportAll);
+        pdfButtonAll.setOnClickListener(view -> {
+            if (check_Write_perm()) { //si il a les permissions
+                try {
+                    database = helper.getWritableDatabase();
+                    Cursor c = database.rawQuery("SELECT * FROM Esport", null); //va chercher les donnees
+                    if (c.getCount() > 0) { //s'il y a de quoi dans la base de données
+                        //clear le tableau au cas ou.
+                        dataUser.clear();
+                        for (int i = 0; i < c.getCount(); i++) { //l'Id commence a 1
+
+                            //insert les données dans dataUser pour PDF.
+                            c.moveToNext();
+                            DonneesUtilisateur temp = new DonneesUtilisateur(
+                                    inputNom.getText().toString(), inputEquipe.getText().toString(),
+                                    c.getString(bd_activity), c.getString(bd_date), c.getString(bd_objectif),
+                                    c.getString(bd_time), c.getString(bd_intensity), c.getString(bd_note)
+                            );
+                            dataUser.add(temp);
+                        }
+                        //maintenant va créer le PDF
+                        pdfFunctions.createPdfMois(dataUser);
+
+                    } else {
+                        Toast.makeText(this, "Vous avez aucun entrainement enregistré sur votre téléphone", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (SQLiteException databaseError) {
+                    Toast.makeText(this, "Il y a une erreur avec la base de données!", Toast.LENGTH_SHORT).show();
+                }
+>>>>>>> Stashed changes
             } else {
                 Toast.makeText(this, "Veuillez appliquer les accès", Toast.LENGTH_SHORT).show();
             }
