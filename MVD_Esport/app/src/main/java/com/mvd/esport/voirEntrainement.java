@@ -2,10 +2,12 @@ package com.mvd.esport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -50,6 +52,16 @@ public class voirEntrainement extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.voir_entrainement);
         initMainLayout();
+
+        //https://stackoverflow.com/questions/44170028/android-how-to-detect-if-night-mode-is-on-when-using-appcompatdelegate-mode-ni
+        //si le thème est noir. Ont ajuste la couleur de la police de note personnelle
+        int nightModeFlags = this.getApplicationContext().getResources().getConfiguration().uiMode &
+                Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                notePerso.setTextColor(Color.RED);
+                break;
+        }
 
 
         //initialise la variable helper en cherchant la base de donnée
