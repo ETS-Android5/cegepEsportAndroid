@@ -83,7 +83,8 @@
                         android:enabled="false"
                         android:imeOptions="actionDone"
                         android:inputType="textPersonName"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:textStyle="bold|italic" />
 
                 </LinearLayout>
 
@@ -111,7 +112,8 @@
                         android:enabled="false"
                         android:focusableInTouchMode="false"
                         android:inputType="textPersonName"
-                        android:minHeight="48dp" />
+                        android:minHeight="48dp"
+                        android:textStyle="bold|italic" />
 
                 </LinearLayout>
 
@@ -139,7 +141,8 @@
                         android:imeOptions="actionDone"
                         android:inputType="textPersonName"
                         android:minHeight="48dp"
-                        android:text="" />
+                        android:text=""
+                        android:textStyle="bold|italic" />
 
                 </LinearLayout>
 
@@ -166,7 +169,8 @@
                         android:enabled="false"
                         android:focusableInTouchMode="false"
                         android:inputType="textPersonName"
-                        android:minHeight="48dp" />
+                        android:minHeight="48dp"
+                        android:textStyle="bold|italic" />
 
                 </LinearLayout>
 
@@ -194,7 +198,8 @@
                         android:imeOptions="actionDone"
                         android:inputType="textPersonName"
                         android:minHeight="48dp"
-                        android:text="" />
+                        android:text=""
+                        android:textStyle="bold|italic" />
 
                 </LinearLayout>
 
@@ -224,7 +229,8 @@
                         android:focusableInTouchMode="false"
                         android:gravity="start|top"
                         android:inputType="textMultiLine"
-                        android:minLines="3" />
+                        android:minLines="3"
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/imgPhoto"
@@ -260,6 +266,7 @@
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
 
@@ -286,6 +293,7 @@
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:textStyle="bold|italic"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textSemaineAfficher" />
 
