@@ -24,4 +24,5 @@
     <string name="exporter_tous_les_entrainements_enregistr_es">Export all your saved training sessions</string>
     <string name="afficher">View</string>
     <string name="retour">Back</string>
+    <string name="donnéSauvegarder">Data are saved</string>
 </resources>

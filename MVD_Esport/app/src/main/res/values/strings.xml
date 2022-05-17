@@ -18,6 +18,7 @@
     <string name="exporter_tous_les_entrainements_enregistr_es">Exporter tous les entrainements enregistrées</string>
     <string name="afficher">Affiche</string>
     <string name="retour">Retour</string>
+    <string name="donnéSauvegarder">Les données sont sauvegarder</string>
     <string-array name="choixIntensité">
         <item>Faible</item>
         <item>Moyen</item>

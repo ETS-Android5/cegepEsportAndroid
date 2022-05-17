@@ -11,6 +11,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -267,6 +268,16 @@ public class MainActivity extends AppCompatActivity {
         notePerso = findViewById(R.id.voirEntrainementNotePerso);
         //fin note Perso
 
+        //https://stackoverflow.com/questions/44170028/android-how-to-detect-if-night-mode-is-on-when-using-appcompatdelegate-mode-ni
+        //si le thème est noir. Ont ajuste la couleur de la police de note personnelle
+        int nightModeFlags = this.getApplicationContext().getResources().getConfiguration().uiMode &
+                Configuration.UI_MODE_NIGHT_MASK;
+        switch (nightModeFlags) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                notePerso.setTextColor(Color.RED);
+                break;
+        }
+
         //Si la langue du téléphone est en anglais ont tasse la boite de texte équipe pour l'aligné avec la boite nom
         if (Locale.getDefault().getLanguage().equals("en")) {
             //https://stackoverflow.com/questions/52148129/programmatically-set-margin-to-constraintlayout
@@ -320,6 +331,8 @@ public class MainActivity extends AppCompatActivity {
                         + inputActivite.getText().toString() + "', '" + dateText.getText().toString() + "', '" + timeText.getText().toString() + "', '"
                         + inputpersonelle.getText().toString() + "', '" + choixintense.getSelectedItem().toString() + "', '" + notePerso.getText().toString() + "')");
                 //fin du module database
+
+                Toast.makeText(this,R.string.donnéSauvegarder , Toast.LENGTH_SHORT).show();
 
                 //le code en commentaire est pour créer un pdf tout seul avec un seul entrainement.
                 /*
