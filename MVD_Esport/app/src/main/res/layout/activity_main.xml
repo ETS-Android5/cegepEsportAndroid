@@ -61,7 +61,7 @@
         app:layout_constraintVertical_bias="0.109" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/barreVertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
@@ -74,7 +74,7 @@
         tools:ignore="SpeakableTextPresentCheck">
 
         <HorizontalScrollView
-            android:id="@+id/horizontalView"
+            android:id="@+id/barreHorizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
@@ -84,7 +84,7 @@
             tools:ignore="MissingConstraints">
 
             <LinearLayout
-                android:id="@+id/tableLayout"
+                android:id="@+id/conteneur"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
